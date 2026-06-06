@@ -1,0 +1,135 @@
+import { useState, useEffect } from 'react'
+import { useWorkspaceStore } from './store/workspace'
+import { SetupScreen } from './components/layout/SetupScreen'
+import { Sidebar } from './components/layout/Sidebar'
+import { MissionPanel } from './components/layout/MissionPanel'
+import { Block1 } from './components/activities/Block1'
+import { Block2 } from './components/activities/Block2'
+import { Block3 } from './components/activities/Block3'
+import { Block4 } from './components/activities/Block4'
+import { Block5 } from './components/activities/Block5'
+import { Block6 } from './components/activities/Block6'
+import { Block7 } from './components/activities/Block7'
+import { AgencyPitch } from './components/activities/AgencyPitch'
+import { LeaderboardPanel } from './components/leaderboard/LeaderboardPanel'
+import { ExportsPanel } from './components/exports/ExportsPanel'
+import { FacilitatorDashboard } from './components/facilitator/FacilitatorDashboard'
+import { BroadcastToast } from './components/ui/shared'
+import { subscribeToBroadcast } from './lib/supabase'
+import type { BroadcastMessage } from './types'
+
+type Panel = 'mission' | 'block1' | 'block2' | 'block3' | 'block4' | 'block5' | 'block6' | 'block7' | 'final' | 'leaderboard' | 'exports'
+
+const PANEL_TITLES: Record<Panel, { title: string; subtitle: string }> = {
+  mission: { title: 'Mission Brief', subtitle: 'Workshop Overview' },
+  block1: { title: 'Social Media Foundations', subtitle: 'Block 1 · Situation Analysis' },
+  block2: { title: 'Consumer Behaviour & Ethics', subtitle: 'Block 2 · Audience & Community Analysis' },
+  block3: { title: 'Platforms & Algorithms', subtitle: 'Block 3 · Channel Strategy' },
+  block4: { title: 'Content & Influencer Strategy', subtitle: 'Block 4 · Campaign Platform' },
+  block5: { title: 'Paid Social & Commerce', subtitle: 'Block 5 · Paid Strategy' },
+  block6: { title: 'Analytics & Measurement', subtitle: 'Block 6 · Measurement Framework' },
+  block7: { title: 'AI & Future Social', subtitle: 'Block 7 · Future Roadmap' },
+  final: { title: 'Agency Pitch', subtitle: 'Final Deliverable · 3-Minute Presentation' },
+  leaderboard: { title: 'Workshop Leaderboard', subtitle: 'Live Rankings' },
+  exports: { title: 'Export Centre', subtitle: 'Download your workshop data' },
+}
+
+function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
+  const [panel, setPanel] = useState<Panel>((initialPanel as Panel) || 'mission')
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const { broadcastMessage, setBroadcast } = useWorkspaceStore()
+
+  useEffect(() => {
+    const unsub = subscribeToBroadcast((payload: unknown) => {
+      const p = payload as { new?: { message?: string; type?: string; id?: string; created_at?: string } }
+      if (p?.new?.message) {
+        const msg: BroadcastMessage = {
+          id: p.new.id || Date.now().toString(),
+          text: p.new.message,
+          type: (p.new.type as 'info' | 'warning' | 'success') || 'info',
+          created_at: p.new.created_at || new Date().toISOString(),
+        }
+        setBroadcast(msg)
+        setTimeout(() => setBroadcast(null), 8000)
+      }
+    })
+    return () => { unsub() }
+  }, [setBroadcast])
+
+  const navigate = (p: string) => { setPanel(p as Panel); setSidebarOpen(false); window.scrollTo(0, 0) }
+  const meta = PANEL_TITLES[panel] || PANEL_TITLES.mission
+
+  const renderPanel = () => {
+    switch (panel) {
+      case 'mission': return <MissionPanel />
+      case 'block1': return <Block1 />
+      case 'block2': return <Block2 />
+      case 'block3': return <Block3 />
+      case 'block4': return <Block4 />
+      case 'block5': return <Block5 />
+      case 'block6': return <Block6 />
+      case 'block7': return <Block7 />
+      case 'final': return <AgencyPitch />
+      case 'leaderboard': return <LeaderboardPanel />
+      case 'exports': return <ExportsPanel />
+      default: return <MissionPanel />
+    }
+  }
+
+  return (
+    <div className="flex min-h-screen bg-slate-50">
+      {broadcastMessage && (
+        <BroadcastToast message={broadcastMessage.text} type={broadcastMessage.type} onDismiss={() => setBroadcast(null)} />
+      )}
+      <div className={`fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity duration-300 ${sidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+        onClick={() => setSidebarOpen(false)} />
+      <div className={`fixed top-0 left-0 h-full z-50 transform transition-transform duration-300 ease-in-out md:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+        <Sidebar currentPanel={panel} onNavigate={navigate} onClose={() => setSidebarOpen(false)} />
+      </div>
+      <div className="flex-1 md:ml-64">
+        <div className="md:hidden sticky top-0 z-30 bg-white border-b border-slate-200 px-4 py-3 flex items-center gap-3">
+          <button onClick={() => setSidebarOpen(s => !s)}
+            className="w-10 h-10 flex items-center justify-center rounded-lg bg-slate-100 text-slate-700 text-xl font-bold flex-shrink-0">
+            {sidebarOpen ? '✕' : '☰'}
+          </button>
+          <div className="text-sm font-bold text-slate-900 truncate">{meta.title}</div>
+        </div>
+        <div className="px-4 pt-6 pb-2 border-b border-slate-200 bg-white hidden md:block">
+          <div className="text-[10px] font-bold tracking-widest uppercase text-brand-500 mb-0.5">{meta.subtitle}</div>
+          <h1 className="text-2xl font-bold text-slate-900">{meta.title}</h1>
+        </div>
+        <div className="px-4 md:px-8 py-6 max-w-3xl">
+          {renderPanel()}
+          {panel.startsWith('block') && (() => {
+            const num = parseInt(panel.replace('block', ''))
+            const prev = num > 1 ? `block${num - 1}` : 'mission'
+            const next = num < 7 ? `block${num + 1}` : 'final'
+            const prevLabel = num > 1 ? `Block ${num - 1}` : 'Mission Brief'
+            const nextLabel = num < 7 ? `Block ${num + 1}` : 'Agency Pitch'
+            return (
+              <div className="flex justify-between mt-8 pt-4 border-t border-slate-200">
+                <button className="px-4 py-2 border border-slate-200 rounded-xl text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate(prev)}>← {prevLabel}</button>
+                <button className="px-4 py-2 bg-brand-600 text-white rounded-xl text-sm font-bold hover:bg-brand-700" onClick={() => navigate(next)}>{nextLabel} →</button>
+              </div>
+            )
+          })()}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default function App() {
+  const { team } = useWorkspaceStore()
+  const [isFacilitator, setIsFacilitator] = useState(false)
+  const [resumePanel, setResumePanel] = useState<string | undefined>(undefined)
+
+  if (isFacilitator) return <FacilitatorDashboard />
+  if (!team) return (
+    <SetupScreen
+      onComplete={(block) => { if (block && block > 1) setResumePanel(`block${block}`) }}
+      onFacilitator={() => setIsFacilitator(true)}
+    />
+  )
+  return <WorkshopApp initialPanel={resumePanel} />
+}
