@@ -36,34 +36,45 @@ export function Sidebar({ currentPanel, onNavigate, onClose }: SidebarProps) {
   }
 
   return (
-    <aside className="w-64 h-screen bg-slate-900 flex flex-col fixed top-0 left-0 z-50 overflow-y-auto">
-      {/* Logo */}
-      <div className="px-5 py-5 border-b border-white/10">
-        <div className="text-[10px] font-bold tracking-widest text-slate-500 uppercase mb-1">BM7621</div>
-        <div className="text-white text-base font-bold leading-snug">Social Media Workshop</div>
-        <div className="text-[10px] text-slate-500 mt-1">CIM Level 4 · Digital Marketing</div>
-      </div>
+    <aside className="w-64 h-screen bg-slate-900 flex flex-col fixed top-0 left-0 z-50">
+      {/* Fixed header — never scrolls, close button always accessible */}
+      <div className="flex-shrink-0 border-b border-white/10">
+        <div className="px-5 py-4 flex items-start justify-between gap-2">
+          <div>
+            <div className="text-[10px] font-bold tracking-widest text-slate-500 uppercase mb-0.5">BM7621</div>
+            <div className="text-white text-base font-bold leading-snug">Social Media Workshop</div>
+            <div className="text-[10px] text-slate-500 mt-0.5">CIM Level 4 · Digital Marketing</div>
+          </div>
+          {onClose && (
+            <button
+              onPointerDown={(e) => { e.stopPropagation(); onClose() }}
+              className="md:hidden w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-xl bg-white/10 text-white text-lg font-bold active:bg-white/20"
+              aria-label="Close menu"
+            >✕</button>
+          )}
+        </div>
 
-      {/* Team info */}
-      {team && (
-        <div className="px-5 py-3 border-b border-white/10">
-          <div className="text-[10px] font-bold tracking-widest text-slate-500 uppercase mb-0.5">{team.brand}</div>
-          <div className="text-white text-sm font-bold">{team.name}</div>
-          {isViewer && <div className="text-[10px] text-amber-400 mt-0.5">👁 Viewer mode</div>}
-          <div className="mt-2">
-            <div className="flex justify-between text-[10px] text-slate-500 mb-1">
-              <span>Score: <span className="text-brand-400 font-bold">{total}</span></span>
-              <span>{completed}/{totalActs} done</span>
-            </div>
-            <div className="h-1 bg-slate-700 rounded-full overflow-hidden">
-              <div className="h-full bg-brand-500 rounded-full transition-all" style={{ width: `${Math.round(completed / totalActs * 100)}%` }} />
+        {/* Team info */}
+        {team && (
+          <div className="px-5 pb-3">
+            <div className="text-[10px] font-bold tracking-widest text-slate-500 uppercase mb-0.5">{team.brand}</div>
+            <div className="text-white text-sm font-bold">{team.name}</div>
+            {isViewer && <div className="text-[10px] text-amber-400 mt-0.5">👁 Viewer mode</div>}
+            <div className="mt-2">
+              <div className="flex justify-between text-[10px] text-slate-500 mb-1">
+                <span>Score: <span className="text-brand-400 font-bold">{total}</span></span>
+                <span>{completed}/{totalActs} done</span>
+              </div>
+              <div className="h-1 bg-slate-700 rounded-full overflow-hidden">
+                <div className="h-full bg-brand-500 rounded-full transition-all" style={{ width: `${Math.round(completed / totalActs * 100)}%` }} />
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 px-3 py-3">
+      {/* Scrollable nav */}
+      <nav className="flex-1 overflow-y-auto px-3 py-3">
         <button onClick={() => navigate('mission')}
           className={`w-full text-left px-3 py-2 rounded-lg text-sm mb-3 flex items-center gap-2 transition-colors ${currentPanel === 'mission' ? 'bg-brand-600 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
           <span>📋</span> Mission Brief
@@ -117,31 +128,31 @@ export function Sidebar({ currentPanel, onNavigate, onClose }: SidebarProps) {
         </div>
       </nav>
 
-      {/* Sync status */}
-      <div className="px-4 py-3 border-t border-white/10">
-        <div className="flex items-center gap-2 text-[10px] text-slate-600">
-          <span>{SYNC_ICONS[syncStatus]}</span>
-          <span>
-            {syncStatus === 'saved' && lastSaved ? `Saved ${new Date(lastSaved).toLocaleTimeString()}` :
-             syncStatus === 'saving' ? 'Saving...' :
-             syncStatus === 'error' ? 'Sync error — saved locally' :
-             'Auto-save on'}
-          </span>
+      {/* Fixed footer — never scrolls */}
+      <div className="flex-shrink-0 border-t border-white/10">
+        <div className="px-4 py-2">
+          <div className="flex items-center gap-2 text-[10px] text-slate-600">
+            <span>{SYNC_ICONS[syncStatus]}</span>
+            <span>
+              {syncStatus === 'saved' && lastSaved ? `Saved ${new Date(lastSaved).toLocaleTimeString()}` :
+               syncStatus === 'saving' ? 'Saving...' :
+               syncStatus === 'error' ? 'Sync error — saved locally' :
+               'Auto-save on'}
+            </span>
+          </div>
         </div>
-      </div>
-
-      {/* Switch team */}
-      <div className="px-4 pb-4 pt-2 border-t border-white/10">
-        <button
-          onClick={() => {
-            if (window.confirm('Leave workshop? Your progress is saved.')) {
-              useWorkspaceStore.getState().clearWorkspace()
-              window.location.reload()
-            }
-          }}
-          className="w-full text-left text-[11px] text-slate-600 hover:text-slate-400 transition-colors flex items-center gap-1.5 py-1">
-          <span>⇄</span> Switch Team / Sign Out
-        </button>
+        <div className="px-4 pb-4 pt-1">
+          <button
+            onClick={() => {
+              if (window.confirm('Leave workshop? Your progress is saved.')) {
+                useWorkspaceStore.getState().clearWorkspace()
+                window.location.reload()
+              }
+            }}
+            className="w-full text-left text-[11px] text-slate-600 hover:text-slate-400 transition-colors flex items-center gap-1.5 py-1">
+            <span>⇄</span> Switch Team / Sign Out
+          </button>
+        </div>
       </div>
     </aside>
   )
