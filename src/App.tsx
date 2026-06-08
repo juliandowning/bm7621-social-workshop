@@ -81,11 +81,17 @@ function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
       {broadcastMessage && (
         <BroadcastToast message={broadcastMessage.text} type={broadcastMessage.type} onDismiss={() => setBroadcast(null)} />
       )}
+      {/* Floating close button — outside sidebar, always on top */}
+      {sidebarOpen && (
+        <button
+          className="md:hidden fixed top-3 right-3 z-[100] w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-slate-800 text-xl font-bold"
+          onPointerDown={() => setSidebarOpen(false)}
+        >✕</button>
+      )}
       {sidebarOpen && (
         <div
           className="fixed inset-0 bg-black/60 z-40 md:hidden"
-          onClick={() => setSidebarOpen(false)}
-          onTouchStart={() => setSidebarOpen(false)}
+          onPointerDown={() => setSidebarOpen(false)}
         />
       )}
       <div className={`fixed top-0 left-0 h-full z-50 transform transition-transform duration-300 ease-in-out md:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
