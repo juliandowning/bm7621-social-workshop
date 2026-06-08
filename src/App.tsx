@@ -81,8 +81,13 @@ function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
       {broadcastMessage && (
         <BroadcastToast message={broadcastMessage.text} type={broadcastMessage.type} onDismiss={() => setBroadcast(null)} />
       )}
-      <div className={`fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity duration-300 ${sidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
-        onClick={() => setSidebarOpen(false)} />
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/60 z-40 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+          onTouchStart={() => setSidebarOpen(false)}
+        />
+      )}
       <div className={`fixed top-0 left-0 h-full z-50 transform transition-transform duration-300 ease-in-out md:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
         <Sidebar currentPanel={panel} onNavigate={navigate} onClose={() => setSidebarOpen(false)} />
       </div>
