@@ -61,7 +61,7 @@ function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
 
   const renderPanel = () => {
     switch (panel) {
-      case 'mission': return <MissionPanel />
+      case 'mission': return <MissionPanel onStart={() => navigate('block1')} />
       case 'block1': return <Block1 />
       case 'block2': return <Block2 />
       case 'block3': return <Block3 />
