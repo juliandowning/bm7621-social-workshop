@@ -2,7 +2,9 @@ import { useWorkspaceStore } from '../../store/workspace'
 import { BRAND_CONTEXT, BLOCK_STRUCTURE, ACTIVITY_ORDER } from '../../data/workshop'
 import { selectTotalScore, selectCompletedCount } from '../../store/workspace'
 
-export function MissionPanel() {
+interface MissionPanelProps { onStart?: () => void }
+
+export function MissionPanel({ onStart }: MissionPanelProps) {
   const { team, scores } = useWorkspaceStore()
   const brand = team?.brand || 'Nike'
   const context = BRAND_CONTEXT[brand]
@@ -89,6 +91,16 @@ export function MissionPanel() {
           })}
         </div>
       </div>
+
+      {/* Start button */}
+      {onStart && (
+        <div className="mt-6 text-center">
+          <button onClick={onStart}
+            className="bg-brand-600 text-white font-bold px-8 py-4 rounded-2xl text-base hover:bg-brand-700 transition-colors shadow-lg">
+            Start Block 1 →
+          </button>
+        </div>
+      )}
     </div>
   )
 }
