@@ -81,22 +81,34 @@ function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
       {broadcastMessage && (
         <BroadcastToast message={broadcastMessage.text} type={broadcastMessage.type} onDismiss={() => setBroadcast(null)} />
       )}
-      {/* Floating close button — outside sidebar, always on top */}
+
+      {/* Mobile sidebar overlay */}
       {sidebarOpen && (
-        <button
-          className="md:hidden fixed top-3 right-3 z-[100] w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-slate-800 text-xl font-bold"
-          onPointerDown={() => setSidebarOpen(false)}
-        >✕</button>
+        <div className="md:hidden fixed inset-0 z-50 flex">
+          {/* Sidebar panel */}
+          <div className="w-72 h-full bg-slate-900 flex flex-col overflow-hidden">
+            {/* Close bar — always visible, first thing at top */}
+            <button
+              className="flex items-center gap-3 px-4 py-4 bg-slate-800 text-white w-full text-left active:bg-slate-700"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <span className="text-2xl">✕</span>
+              <span className="font-bold text-sm">Close Menu</span>
+            </button>
+            <div className="flex-1 overflow-y-auto">
+              <Sidebar currentPanel={panel} onNavigate={navigate} onClose={() => setSidebarOpen(false)} />
+            </div>
+          </div>
+          {/* Tap outside to close */}
+          <div className="flex-1 bg-black/60" onClick={() => setSidebarOpen(false)} />
+        </div>
       )}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/60 z-40 md:hidden"
-          onPointerDown={() => setSidebarOpen(false)}
-        />
-      )}
-      <div className={`fixed top-0 left-0 h-full z-50 transform transition-transform duration-300 ease-in-out md:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
-        <Sidebar currentPanel={panel} onNavigate={navigate} onClose={() => setSidebarOpen(false)} />
+
+      {/* Desktop sidebar — always visible */}
+      <div className="hidden md:block fixed top-0 left-0 h-full z-50">
+        <Sidebar currentPanel={panel} onNavigate={navigate} />
       </div>
+
       <div className="flex-1 md:ml-64">
         <div className="md:hidden sticky top-0 z-[60] bg-white border-b border-slate-200 px-4 py-3 flex items-center gap-3">
           <button onClick={() => setSidebarOpen(s => !s)}
