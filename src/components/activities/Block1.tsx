@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useWorkspaceStore } from '../../store/workspace'
 import { PROS_CONS_STATEMENTS, JOURNEY_ACTIVITIES, JOURNEY_STAGES, PLATFORMS_TO_CATEGORISE, PLATFORM_CATEGORIES_LIST, ACTIVITY_DISPLAY_NUM } from '../../data/workshop'
 import { ActivityCard, FeedbackPanel, Alert, confirmSubmit } from '../ui/shared'
@@ -66,13 +66,23 @@ export function Block1() {
 
   const brand = team?.brand || 'Nike'
 
+  // Shuffle once per session so answer pattern isn't predictable
+  const shuffledStatements = useMemo(() => {
+    const arr = [...PROS_CONS_STATEMENTS]
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]]
+    }
+    return arr
+  }, [])
+
   return (
     <div>
       {/* B1A1: Pros & Cons */}
       <ActivityCard number={N.b1a1} title="Pros & Cons Challenge" subtitle="Classify each statement as a benefit or limitation of social media" points={scores.b1a1?.points || 0} locked={a1Locked}>
         <Alert type="info">🃏 For each statement, decide: is this a <strong>Benefit</strong> or a <strong>Limitation</strong> of social media for {brand}?</Alert>
         <div className="space-y-3 mb-4">
-          {PROS_CONS_STATEMENTS.map(stmt => {
+          {shuffledStatements.map(stmt => {
             const pick = a1Picks[stmt.id]
             const showResult = a1Locked && a1Fb
             const isCorrect = pick === stmt.correct
@@ -141,7 +151,7 @@ export function Block1() {
         </div>
         {!a2Locked && !isViewer && (
           <button className="bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-emerald-700 disabled:opacity-50"
-            onClick={() => confirmSubmit(submitA2)} disabled={Object.keys(a2Map).length < JOURNEY_ACTIVITIES.length}>
+            onClick={() => confirmSubmit(submitA2)} disabled={Object.keys(a2Map).length < 5}>
             Submit Answers
           </button>
         )}
