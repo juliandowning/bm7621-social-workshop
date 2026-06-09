@@ -1,213 +1,152 @@
 import { useState } from 'react'
 import { useWorkspaceStore } from '../../store/workspace'
-import { AI_CONTENT_EXAMPLES, FUTURE_TRENDS, ACTIVITY_DISPLAY_NUM, BRAND_CONTEXT } from '../../data/workshop'
-import { ActivityCard, FeedbackPanel, Alert, CharCount, Ranking, confirmSubmit } from '../ui/shared'
-import type { Brand } from '../../types'
-
-const N = ACTIVITY_DISPLAY_NUM
+import { AI_CONTENT_EXAMPLES, FUTURE_TRENDS, TRENDS_KEYWORDS, AI_TOOL_CATEGORIES, AI_TOOLS_KEYWORDS, calcQualityScore } from '../../data/workshop'
+import { ActivityCard, FeedbackPanel, Alert, Ranking, CharCount, MultiChoice, confirmSubmit } from '../ui/shared'
 
 export function Block7() {
-  const { team, scores, responses, updateScore, updateResponse, lockActivity } = useWorkspaceStore()
+  const { scores, responses, updateScore, updateResponse, lockActivity } = useWorkspaceStore()
   const isViewer = useWorkspaceStore(s => s.isViewer)
-  const brand = (team?.brand || 'Nike') as Brand
-  const aiExamples = AI_CONTENT_EXAMPLES[brand]
-  const context = BRAND_CONTEXT[brand]
 
-  // ── B7A1: Human vs AI Challenge ───────────────────────────
+  // A22: Human vs AI
   const a1Locked = !!(responses['b7a1_locked'])
-  const [a1Picks, setA1Picks] = useState<Record<string, 'human' | 'ai'>>(
-    (responses['b7a1_picks'] as Record<string, 'human' | 'ai'>) || {}
-  )
-  const [a1Score, setA1Score] = useState<number | null>(null)
+  const [a1Picks, setA1Picks] = useState<Record<string, string>>((responses['b7a1_picks'] as Record<string, string>) || {})
 
   const submitA1 = () => {
-    const correct = aiExamples.filter(e => a1Picks[e.id] === (e.isAI ? 'ai' : 'human')).length
-    const cPts = Object.keys(a1Picks).length >= aiExamples.length ? 2 : 1
-    const qPts = Math.min(3, correct + (correct === aiExamples.length ? 1 : 0))
-    updateScore('b7a1', Math.min(5, cPts + qPts), 5, cPts, qPts)
+    const correct = AI_CONTENT_EXAMPLES.filter(e => a1Picks[e.id] === (e.isAI ? 'ai' : 'human')).length
+    const pts = Math.min(5, correct + (correct === AI_CONTENT_EXAMPLES.length ? 1 : 0))
+    updateScore('b7a1', pts, 5)
     updateResponse({ b7a1_picks: a1Picks, b7a1_locked: true })
     lockActivity('b7a1')
-    setA1Score(correct)
   }
 
-  // ── B7A2: Future Trends Debate ────────────────────────────
+  // A23: Future Trends - PITCH
   const a2Locked = !!(responses['b7a2_locked'])
-  const [a2Ranked, setA2Ranked] = useState<string[]>(
-    (responses['b7a2_ranked'] as string[]) || []
-  )
+  const [a2Ranked, setA2Ranked] = useState<string[]>((responses['b7a2_ranked'] as string[]) || [])
   const [a2Rationale, setA2Rationale] = useState<string>((responses['b7a2_rationale'] as string) || '')
 
   const submitA2 = () => {
-    const cPts = a2Ranked.length >= 5 && a2Rationale.trim().length >= 30 ? 2 : a2Ranked.length >= 3 ? 1 : 0
-    const topPickIsStrong = ['gen_ai', 'social_search', 'social_commerce'].includes(a2Ranked[0])
-    const qPts = Math.min(3, (a2Ranked.length >= 5 ? 1 : 0) + (topPickIsStrong ? 1 : 0) + (a2Rationale.length >= 80 ? 1 : 0))
-    updateScore('b7a2', Math.min(5, cPts + qPts), 5, cPts, qPts)
+    const topIsStrong = ['gen_ai', 'social_search', 'social_commerce_full'].includes(a2Ranked[0])
+    const pts = Math.min(5, (a2Ranked.length >= 5 ? 1 : 0) + (topIsStrong ? 1 : 0) + calcQualityScore(a2Rationale, TRENDS_KEYWORDS))
+    updateScore('b7a2', pts, 5)
     updateResponse({ b7a2_ranked: a2Ranked, b7a2_rationale: a2Rationale, b7a2_locked: true })
     lockActivity('b7a2')
   }
 
-  // ── B7A3: Creative Concept Studio ────────────────────────
+  // A24: AI Tools Audit - PITCH
   const a3Locked = !!(responses['b7a3_locked'])
-  const [a3SocialAd, setA3SocialAd] = useState<string>((responses['b7a3_ad'] as string) || '')
-  const [a3Carousel, setA3Carousel] = useState<string>((responses['b7a3_carousel'] as string) || '')
-  const [a3Reel, setA3Reel] = useState<string>((responses['b7a3_reel'] as string) || '')
-  const [a3Influencer, setA3Influencer] = useState<string>((responses['b7a3_influencer'] as string) || '')
-  const [a3UsedAI, setA3UsedAI] = useState<boolean>((responses['b7a3_ai_used'] as boolean) || false)
+  const [a3Selected, setA3Selected] = useState<Record<string, string[]>>((responses['b7a3_selected'] as Record<string, string[]>) || {})
+  const [a3Rationale, setA3Rationale] = useState<string>((responses['b7a3_rationale'] as string) || '')
 
   const submitA3 = () => {
-    const fields = [a3SocialAd, a3Carousel, a3Reel, a3Influencer]
-    const filled = fields.filter(f => f.trim().length >= 20).length
-    const cPts = filled >= 4 ? 2 : filled >= 2 ? 1 : 0
-    const qPts = Math.min(3, filled)
-    updateScore('b7a3', Math.min(5, cPts + qPts), 5, cPts, qPts)
-    updateResponse({ b7a3_ad: a3SocialAd, b7a3_carousel: a3Carousel, b7a3_reel: a3Reel, b7a3_influencer: a3Influencer, b7a3_ai_used: a3UsedAI, b7a3_locked: true })
+    const totalSelected = Object.values(a3Selected).reduce((s, arr) => s + arr.length, 0)
+    const pts = Math.min(5, (totalSelected >= 3 ? 1 : 0) + calcQualityScore(a3Rationale, AI_TOOLS_KEYWORDS))
+    updateScore('b7a3', pts, 5)
+    updateResponse({ b7a3_selected: a3Selected, b7a3_rationale: a3Rationale, b7a3_locked: true })
     lockActivity('b7a3')
   }
 
   return (
     <div>
-      {/* B7A1: Human vs AI Challenge */}
-      <ActivityCard number={N.b7a1} title="Human vs AI Challenge" subtitle="Can you tell the difference between human and AI content?" points={scores.b7a1?.points || 0} locked={a1Locked}>
-        <Alert type="info">🤖 Each example is either written by a human or generated by AI. For each one, decide — Human or AI? Then see the tell-tale signs.</Alert>
+      {/* A22: Human vs AI */}
+      <ActivityCard number={22} title="Human vs AI Challenge" subtitle="Can you tell the difference between human and AI Nike content?" points={scores.b7a1?.points || 0} locked={a1Locked}>
+        <Alert type="info">🤖 Each example is either written by a human or generated by AI. Decide — Human or AI? The giveaways are revealed after you submit.</Alert>
         <div className="space-y-5 mb-4">
-          {aiExamples.map(example => {
+          {AI_CONTENT_EXAMPLES.map(example => {
             const pick = a1Picks[example.id]
             const showResult = a1Locked
             const isCorrect = pick === (example.isAI ? 'ai' : 'human')
-            const answer = example.isAI ? 'ai' : 'human'
             return (
-              <div key={example.id} className={`border-2 rounded-xl p-4 transition-all ${showResult ? (isCorrect ? 'border-emerald-300 bg-emerald-50' : 'border-red-300 bg-red-50') : 'border-slate-200'}`}>
-                <div className="bg-white border border-slate-200 rounded-xl p-4 text-sm text-slate-700 italic mb-3">
-                  "{example.content}"
-                </div>
-                <div className="flex gap-2 mb-2">
+              <div key={example.id} className={`border-2 rounded-xl p-4 ${showResult ? (isCorrect ? 'border-emerald-300 bg-emerald-50' : 'border-red-300 bg-red-50') : 'border-slate-200'}`}>
+                <div className="bg-white border border-slate-200 rounded-xl p-4 text-sm text-slate-700 italic mb-3">"{example.content}"</div>
+                <div className="flex gap-2">
                   {(['human', 'ai'] as const).map(v => (
                     <button key={v} disabled={a1Locked || isViewer}
                       onClick={() => setA1Picks(prev => ({ ...prev, [example.id]: v }))}
-                      className={`flex-1 py-2 rounded-xl text-sm font-bold border-2 transition-all capitalize ${pick === v ? (v === 'human' ? 'border-emerald-500 bg-emerald-500 text-white' : 'border-violet-500 bg-violet-500 text-white') : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'} ${(a1Locked || isViewer) ? 'cursor-default' : ''}`}>
+                      className={`flex-1 py-2 rounded-xl text-sm font-bold border-2 capitalize transition-all ${pick === v ? (v === 'human' ? 'border-emerald-500 bg-emerald-500 text-white' : 'border-violet-500 bg-violet-500 text-white') : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'} disabled:cursor-default`}>
                       {v === 'human' ? '👤 Human' : '🤖 AI'}
                     </button>
                   ))}
                 </div>
                 {showResult && (
-                  <div className={`text-xs p-2 rounded-lg ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-50 text-amber-800'}`}>
-                    <strong>{isCorrect ? '✓ Correct' : `✗ This was ${answer}`}</strong> — {example.giveaway}
+                  <div className={`mt-2 text-xs p-2 rounded-lg ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-50 text-amber-800'}`}>
+                    <strong>{isCorrect ? '✓ Correct' : `✗ This was ${example.isAI ? 'AI' : 'Human'}`}</strong> — {example.giveaway}
                   </div>
                 )}
               </div>
             )
           })}
         </div>
-        {!a1Locked && !isViewer && (
-          <button className="bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-emerald-700 disabled:opacity-50"
-            onClick={() => confirmSubmit(submitA1)} disabled={Object.keys(a1Picks).length < aiExamples.length}>
-            Submit Answers
-          </button>
-        )}
-        {a1Locked && a1Score !== null && scores.b7a1 && (
-          <FeedbackPanel score={scores.b7a1.points} max={5}
-            completionPts={scores.b7a1.completionPts} qualityPts={scores.b7a1.qualityPts}
-            why={`${a1Score}/${aiExamples.length} correct. AI content tends to be grammatically perfect, generic, and lacks specific human experience. Human content is often imperfect, specific, and emotionally raw.`}
-            example="AI tells: grammatically perfect prose, invented statistics, corporate phrasing, could apply to any brand. Human tells: lowercase grammar, brand-specific voice, hyper-specific details, emotional imperfection. The gap is closing — but genuine experience and specific knowledge still separates them."
-            keyLearning={[
-              'AI excels at volume and consistency — but struggles with authentic voice and specific experience.',
-              'The most detectable AI content uses plausible-sounding but invented statistics.',
-              'Brand voice is the hardest thing to replicate — it\'s built from thousands of real interactions.',
-              'Use AI as a draft tool, not a publishing tool — human editing is still essential.',
-            ]}
-          />
-        )}
+        {!a1Locked && !isViewer && <button className="btn-success" onClick={() => confirmSubmit(submitA1)} disabled={Object.keys(a1Picks).length < AI_CONTENT_EXAMPLES.length}>Submit Answers</button>}
+        {a1Locked && scores.b7a1 && <FeedbackPanel score={scores.b7a1.points} max={5}
+          why={`${AI_CONTENT_EXAMPLES.filter(e => a1Picks[e.id] === (e.isAI ? 'ai' : 'human')).length}/${AI_CONTENT_EXAMPLES.length} correct.`}
+          keyLearning={['AI excels at volume and consistency but struggles with authentic brand voice and specific human experience.', 'The most detectable AI content uses invented statistics that sound plausible.', 'Use AI as a draft and scale tool — human editing and brand voice expertise is still essential.']} />}
       </ActivityCard>
 
-      {/* B7A2: Future Trends Debate */}
-      <ActivityCard number={N.b7a2} title="Future Trends Debate" subtitle="Rank the future trends most likely to impact your brand" points={scores.b7a2?.points || 0} locked={a2Locked}>
-        <Alert type="info">🔮 Rank these future social media trends by their likely impact on <strong>{brand}</strong>. #1 = biggest impact. Drag to reorder or tap to rank.</Alert>
+      {/* A23: Future Trends - PITCH */}
+      <ActivityCard number={23} title="Future Trends Debate" subtitle="Rank trends by impact on Nike and explain your thinking — feeds your Agency Pitch" points={scores.b7a2?.points || 0} locked={a2Locked} isPitch>
+        <Alert type="info">🔮 Rank these future social media trends by their likely impact on Nike. #1 = biggest impact. Then explain why your top trend matters most.</Alert>
         <div className="mb-4">
-          <Ranking
-            items={FUTURE_TRENDS.map(t => ({ id: t.id, label: `${t.label} — ${t.desc}` }))}
-            ranked={a2Ranked}
-            onChange={setA2Ranked}
-            disabled={a2Locked || isViewer}
-          />
+          <Ranking items={FUTURE_TRENDS.map(t => ({ id: t.id, label: `${t.label} — ${t.desc}` }))}
+            ranked={a2Ranked} onChange={setA2Ranked} disabled={a2Locked || isViewer} />
         </div>
         <div className="mb-4">
-          <label className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1 block">Why is your #1 trend the biggest opportunity or threat for {brand}?</label>
-          <textarea disabled={a2Locked || isViewer} value={a2Rationale}
-            onChange={e => setA2Rationale(e.target.value)}
-            placeholder={`Explain why your top-ranked trend matters most for ${brand}... (min 30 chars)`}
-            rows={3}
-            className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-400 resize-none disabled:bg-slate-50" />
-          <CharCount value={a2Rationale} min={30} max={300} />
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Why is your #1 trend the biggest opportunity or threat for Nike?</label>
+          <textarea disabled={a2Locked || isViewer} value={a2Rationale} onChange={e => setA2Rationale(e.target.value)}
+            placeholder="Explain specifically why this trend matters most for Nike's 18–24 female strategy — reference the platform, the audience, the commercial opportunity or risk..."
+            rows={3} className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-400 resize-none disabled:bg-slate-50" />
+          <CharCount value={a2Rationale} min={40} max={300} />
         </div>
-        {!a2Locked && !isViewer && (
-          <button className="bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-emerald-700 disabled:opacity-50"
-            onClick={() => confirmSubmit(submitA2)} disabled={a2Ranked.length < 3 || a2Rationale.trim().length < 30}>
-            Submit Rankings
-          </button>
-        )}
-        {a2Locked && scores.b7a2 && (
-          <FeedbackPanel score={scores.b7a2.points} max={5}
-            completionPts={scores.b7a2.completionPts} qualityPts={scores.b7a2.qualityPts}
-            why="Quality based on ranking all 7 trends, having Generative AI, Social Search or Social Commerce in top 2, and depth of rationale."
-            example={`${brand} top trends: 1. ${FUTURE_TRENDS[0].label} — most immediate commercial impact. 2. ${FUTURE_TRENDS[1].label} — ${context.industry} brands must be discoverable in social search as it replaces Google for younger audiences. 3. ${FUTURE_TRENDS[6].label} — in-app purchase is transforming the conversion funnel. These three collectively reshape how ${brand} acquires and converts customers.`}
-            keyLearning={[
-              'Generative AI will commoditise content production — differentiation moves to strategy and authenticity.',
-              'Social search (TikTok, Instagram) is replacing Google for 40% of Gen Z — SEO principles now apply to social.',
-              'Synthetic influencers are already large — the question is brand association risk, not whether they exist.',
-              'Predictive analytics will shift social from reactive to proactive — content planned around predicted behaviour.',
-            ]}
-          />
-        )}
+        {!a2Locked && !isViewer && <button className="btn-success" onClick={() => confirmSubmit(submitA2)} disabled={a2Ranked.length < 3 || a2Rationale.trim().length < 40}>Submit Rankings</button>}
+        {a2Locked && scores.b7a2 && <FeedbackPanel score={scores.b7a2.points} max={5}
+          why="Quality: ranked 5+ trends, strong #1 choice (Generative AI, Social Search or Full Social Commerce), depth of rationale (keyword bank: nike, sport, female, discovery, tiktok, ai, authentic, creator, etc)."
+          keyLearning={['Social search is already replacing Google for 40% of Gen Z — Nike must optimise for TikTok and Instagram search.', 'Generative AI will commoditise content — differentiation moves to strategy, authenticity and community.', 'Full social commerce will eliminate the website as a required step — Nike.com\'s role fundamentally changes.']} />}
       </ActivityCard>
 
-      {/* B7A3: Creative Concept Studio */}
-      <ActivityCard number={N.b7a3} title="Creative Concept Studio" subtitle="Develop campaign creative concepts for your brand" points={scores.b7a3?.points || 0} locked={a3Locked}>
-        <Alert type="info">🎨 Develop creative concepts for <strong>{brand}'s</strong> campaign. Use your campaign platform from Block 4. AI tools are optional — be creative!</Alert>
-        <div className="space-y-4 mb-4">
-          {[
-            { key: 'ad', label: 'Social Ad Concept', state: a3SocialAd, set: setA3SocialAd, placeholder: `e.g. 15-second video ad: opens on a crowded gym at 5am. One person training. Text appears: "The city is asleep. You're not." ${brand} logo. No voiceover.` },
-            { key: 'carousel', label: 'Carousel Concept', state: a3Carousel, set: setA3Carousel, placeholder: `e.g. 6-slide carousel: "6 things ${brand} customers do differently." Each slide = one behaviour with striking visual and copy. Swipe to reveal.` },
-            { key: 'reel', label: 'Reel / Short Video Concept', state: a3Reel, set: setA3Reel, placeholder: `e.g. TikTok trend adaptation: "Things that hit differently when you're a ${brand} person" — relatable moments with ${brand} product as the constant.` },
-            { key: 'influencer', label: 'Influencer Activation Concept', state: a3Influencer, set: setA3Influencer, placeholder: `e.g. 10 micro-influencers document their first week using ${brand} product. Unsponsored-feeling content, genuine reactions, no scripts.` },
-          ].map(field => (
-            <div key={field.key}>
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1 block">{field.label}</label>
-              <textarea disabled={a3Locked || isViewer} value={field.state}
-                onChange={e => field.set(e.target.value)}
-                placeholder={field.placeholder}
-                rows={3}
-                className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-400 resize-none disabled:bg-slate-50" />
-              <CharCount value={field.state} min={20} max={400} />
-            </div>
-          ))}
+      {/* A24: AI Tools Audit - PITCH */}
+      <ActivityCard number={24} title="AI Tools Audit" subtitle="Recommend AI tools for Nike's social team — feeds your Agency Pitch" points={scores.b7a3?.points || 0} locked={a3Locked} isPitch>
+        <Alert type="info">🛠️ Select the AI tools you would recommend for Nike's social media team and explain your strategy for AI adoption.</Alert>
+        <div className="space-y-5 mb-4">
+          {AI_TOOL_CATEGORIES.map(cat => {
+            const catSelected = a3Selected[cat.id] || []
+            return (
+              <div key={cat.id} className="border border-slate-200 rounded-xl p-4">
+                <div className="text-xs font-bold uppercase tracking-wider text-brand-600 mb-3">{cat.category}</div>
+                <div className="space-y-2">
+                  {cat.tools.map(tool => {
+                    const sel = catSelected.includes(tool.id)
+                    return (
+                      <button key={tool.id} disabled={a3Locked || isViewer}
+                        onClick={() => {
+                          if (a3Locked || isViewer) return
+                          setA3Selected(prev => ({
+                            ...prev, [cat.id]: sel ? catSelected.filter(t => t !== tool.id) : [...catSelected, tool.id]
+                          }))
+                        }}
+                        className={`w-full text-left p-3 rounded-lg border-2 transition-all flex items-start gap-3 ${sel ? 'border-brand-500 bg-brand-50' : 'border-slate-200 hover:border-brand-300'} disabled:cursor-default`}>
+                        <div className={`w-3.5 h-3.5 border-2 rounded flex-shrink-0 mt-0.5 ${sel ? 'border-brand-500 bg-brand-500' : 'border-slate-300'}`} />
+                        <div>
+                          <div className={`font-semibold text-sm ${sel ? 'text-brand-700' : 'text-slate-800'}`}>{tool.name}</div>
+                          <div className="text-xs text-slate-500">{tool.purpose}</div>
+                        </div>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            )
+          })}
         </div>
-
-        <div className="flex items-center gap-3 mb-4">
-          <input type="checkbox" id="ai_used" disabled={a3Locked || isViewer}
-            checked={a3UsedAI} onChange={e => setA3UsedAI(e.target.checked)}
-            className="accent-brand-500" />
-          <label htmlFor="ai_used" className="text-sm text-slate-600">I used AI tools to help develop these concepts</label>
+        <div className="mb-4">
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">AI Adoption Strategy for Nike</label>
+          <textarea disabled={a3Locked || isViewer} value={a3Rationale} onChange={e => setA3Rationale(e.target.value)}
+            placeholder="How should Nike's social team adopt AI tools? What should AI handle vs what needs human oversight? Reference efficiency, brand voice, authenticity, risk, governance..."
+            rows={3} className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-400 resize-none disabled:bg-slate-50" />
+          <CharCount value={a3Rationale} min={40} max={300} />
         </div>
-
-        {!a3Locked && !isViewer && (
-          <button className="bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-emerald-700 disabled:opacity-50"
-            onClick={() => confirmSubmit(submitA3)} disabled={[a3SocialAd, a3Carousel, a3Reel, a3Influencer].filter(f => f.trim().length >= 20).length < 2}>
-            Submit Concepts
-          </button>
-        )}
-        {a3Locked && scores.b7a3 && (
-          <FeedbackPanel score={scores.b7a3.points} max={5}
-            completionPts={scores.b7a3.completionPts} qualityPts={scores.b7a3.qualityPts}
-            why="Completion: concepts with 20+ chars across 4 formats. Quality: specificity and creative detail of each concept."
-            example={`Strong ${brand} creative: Ad — opens mid-action, brand appears in second 8 (not first), emotional payoff in last 3 seconds. Carousel — each slide works as standalone and builds narrative. Reel — starts with tension/question, resolves with brand moment. Influencer — authentic brief with creative freedom, product is part of their world not the world itself.`}
-            keyLearning={[
-              'The best social creative feels like content, not advertising — brand is present but not shouted.',
-              'Carousels perform best when slide 1 creates a question that slides 2–6 answer.',
-              'Reel hooks need to appear in the first 0.5 seconds — open on the most interesting moment.',
-              'Influencer briefs should give creative direction not creative control — authenticity is the asset.',
-            ]}
-          />
-        )}
+        {!a3Locked && !isViewer && <button className="btn-success" onClick={() => confirmSubmit(submitA3)} disabled={Object.values(a3Selected).reduce((s, arr) => s + arr.length, 0) < 3 || a3Rationale.trim().length < 40}>Submit Audit</button>}
+        {a3Locked && scores.b7a3 && <FeedbackPanel score={scores.b7a3.points} max={5}
+          why="Quality: 3+ tools selected + rationale depth (keyword bank: efficiency, scale, automate, personalise, listen, analytics, human, oversight, brand, voice, authentic, risk, governance, etc)."
+          keyLearning={['AI should handle volume and variation — human creative directors inject brand voice and emotional authenticity.', 'Social listening AI (Brandwatch, Sprinklr) is Nike\'s most important risk tool — 24/7 sentiment monitoring.', 'The Human-in-the-Loop model: AI for scale, humans for strategy, empathy and cultural nuance.']} />}
       </ActivityCard>
     </div>
   )
