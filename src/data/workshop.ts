@@ -1,23 +1,23 @@
-import type { Brand, ActivityKey } from '../types'
+import type { ActivityKey } from '../types'
 
-export const WORKSHOP_CODES: Record<string, { brand: Brand; name: string }> = {
-  SOCIAL01: { brand: 'Nike', name: 'Nike Team' },
-  SOCIAL02: { brand: 'Netflix', name: 'Netflix Team' },
-  SOCIAL03: { brand: 'Airbnb', name: 'Airbnb Team' },
-  SOCIAL04: { brand: 'Spotify', name: 'Spotify Team' },
-  SOCIAL05: { brand: 'Innocent', name: 'Innocent Team' },
+// ─── ACCESS CODES ────────────────────────────────────────────
+export const WORKSHOP_CODES: Record<string, { name: string }> = {
+  SOCIAL01: { name: 'Agency 1' },
+  SOCIAL02: { name: 'Agency 2' },
+  SOCIAL03: { name: 'Agency 3' },
+  SOCIAL04: { name: 'Agency 4' },
+  SOCIAL05: { name: 'Agency 5' },
 }
 
-export const BRANDS: Brand[] = ['Nike', 'Netflix', 'Airbnb', 'Spotify', 'Innocent']
-
+// ─── BLOCK STRUCTURE ─────────────────────────────────────────
 export const BLOCK_STRUCTURE = [
-  { id: 1, label: 'Social Media Foundations', description: 'Situation Analysis', activities: ['b1a1','b1a2','b1a3'] as ActivityKey[], color: 'blue' },
-  { id: 2, label: 'Consumer Behaviour & Ethics', description: 'Audience & Community Analysis', activities: ['b2a1','b2a2','b2a3','b2a4'] as ActivityKey[], color: 'violet' },
-  { id: 3, label: 'Platforms & Algorithms', description: 'Channel Strategy', activities: ['b3a1','b3a2','b3a3'] as ActivityKey[], color: 'teal' },
-  { id: 4, label: 'Content & Influencer Strategy', description: 'Campaign Platform & Content Strategy', activities: ['b4a1','b4a2','b4a3','b4a4'] as ActivityKey[], color: 'amber' },
-  { id: 5, label: 'Paid Social & Commerce', description: 'Paid Social & Social Commerce Strategy', activities: ['b5a1','b5a2','b5a3'] as ActivityKey[], color: 'red' },
-  { id: 6, label: 'Analytics & Measurement', description: 'Measurement Framework', activities: ['b6a1','b6a2','b6a3'] as ActivityKey[], color: 'emerald' },
-  { id: 7, label: 'AI & Future Social', description: 'AI & Future Development Roadmap', activities: ['b7a1','b7a2','b7a3'] as ActivityKey[], color: 'purple' },
+  { id: 1, label: 'Social Media Foundations', deliverable: 'Situation Analysis', activities: ['b1a1','b1a2','b1a3'] as ActivityKey[], color: 'blue' },
+  { id: 2, label: 'Consumer Behaviour & Ethics', deliverable: 'Audience & Objectives', activities: ['b2a1','b2a2','b2a3','b2a4','b2a5'] as ActivityKey[], color: 'violet' },
+  { id: 3, label: 'Platforms & Algorithms', deliverable: 'Channel Strategy', activities: ['b3a1','b3a2','b3a3'] as ActivityKey[], color: 'teal' },
+  { id: 4, label: 'Content & Influencer Strategy', deliverable: 'Campaign Platform & Creative', activities: ['b4a1','b4a2','b4a3','b4a4'] as ActivityKey[], color: 'amber' },
+  { id: 5, label: 'Paid Social & Commerce', deliverable: 'Paid Social Strategy', activities: ['b5a1','b5a2','b5a3'] as ActivityKey[], color: 'red' },
+  { id: 6, label: 'Analytics & Measurement', deliverable: 'Measurement Framework', activities: ['b6a1','b6a2','b6a3'] as ActivityKey[], color: 'emerald' },
+  { id: 7, label: 'AI & Future Social', deliverable: 'AI & Future Roadmap', activities: ['b7a1','b7a2','b7a3'] as ActivityKey[], color: 'purple' },
 ]
 
 export const ACTIVITY_LABELS: Record<ActivityKey, string> = {
@@ -28,39 +28,31 @@ export const ACTIVITY_LABELS: Record<ActivityKey, string> = {
   b2a2: 'Behaviour Mapping',
   b2a3: 'Ethical Dilemma Workshop',
   b2a4: 'Community Growth Strategy',
+  b2a5: 'Campaign Objectives',
   b3a1: 'Platform Selection',
   b3a2: 'Algorithm Detective',
   b3a3: 'Social Lab — Simulator',
-  b4a1: '3-Second Test',
+  b4a1: 'Content Format Selection',
   b4a2: 'Campaign Platform Workshop',
-  b4a3: 'Content Mix Planning',
+  b4a3: 'Creative Concept Studio',
   b4a4: 'Influencer Selection',
   b5a1: 'Audience Targeting',
   b5a2: 'Budget Allocation',
-  b5a3: 'Social Commerce Journey',
+  b5a3: 'Social Commerce Strategy',
   b6a1: 'Campaign Diagnosis',
   b6a2: 'Funnel Analysis',
   b6a3: 'Measurement Dashboard',
   b7a1: 'Human vs AI Challenge',
   b7a2: 'Future Trends Debate',
-  b7a3: 'Creative Concept Studio',
+  b7a3: 'AI Tools Audit',
   final: 'Agency Pitch',
 }
 
-export const ACTIVITY_DISPLAY_NUM: Record<ActivityKey, number> = {
-  b1a1:1, b1a2:2, b1a3:3,
-  b2a1:4, b2a2:5, b2a3:6, b2a4:7,
-  b3a1:8, b3a2:9, b3a3:10,
-  b4a1:11, b4a2:12, b4a3:13, b4a4:14,
-  b5a1:15, b5a2:16, b5a3:17,
-  b6a1:18, b6a2:19, b6a3:20,
-  b7a1:21, b7a2:22, b7a3:23,
-  final:24,
-}
+export const PITCH_ACTIVITIES: ActivityKey[] = ['b2a2','b2a5','b3a1','b4a2','b4a3','b4a4','b5a1','b5a2','b5a3','b6a3','b7a2','b7a3']
 
 export const ACTIVITY_ORDER: ActivityKey[] = [
   'b1a1','b1a2','b1a3',
-  'b2a1','b2a2','b2a3','b2a4',
+  'b2a1','b2a2','b2a3','b2a4','b2a5',
   'b3a1','b3a2','b3a3',
   'b4a1','b4a2','b4a3','b4a4',
   'b5a1','b5a2','b5a3',
@@ -69,446 +61,604 @@ export const ACTIVITY_ORDER: ActivityKey[] = [
   'final',
 ]
 
-export const TOTAL_ACTIVITIES = ACTIVITY_ORDER.length
+export const TOTAL_ACTIVITIES = ACTIVITY_ORDER.length - 1 // exclude final
 
-// ─── ACTIVITY CONTENT ────────────────────────────────────────
-
-export const PROS_CONS_STATEMENTS = [
-  { id: 'direct_engagement', text: 'Direct customer engagement', correct: 'benefit' },
-  { id: 'reputation_risk', text: 'Reputation risk from public complaints', correct: 'limitation' },
-  { id: 'community_building', text: 'Community building at scale', correct: 'benefit' },
-  { id: 'misinformation', text: 'Misinformation can spread rapidly', correct: 'limitation' },
-  { id: 'realtime_feedback', text: 'Real-time customer feedback', correct: 'benefit' },
-  { id: 'content_saturation', text: 'Content saturation makes cut-through harder', correct: 'limitation' },
-  { id: 'low_cost_reach', text: 'Low cost organic reach potential', correct: 'benefit' },
-  { id: 'algorithm_dependency', text: 'Algorithm changes can wipe out reach overnight', correct: 'limitation' },
-  { id: 'brand_humanisation', text: 'Humanises the brand through authentic content', correct: 'benefit' },
-  { id: 'mental_health', text: 'Association with mental health concerns', correct: 'limitation' },
-]
-
-export const JOURNEY_STAGES = ['Awareness', 'Consideration', 'Purchase', 'Loyalty', 'Advocacy'] as const
-export const JOURNEY_ACTIVITIES = [
-  { id: 'viral_video', text: 'Viral video campaign', stage: 'Awareness' },
-  { id: 'product_comparison', text: 'Product comparison posts', stage: 'Consideration' },
-  { id: 'shoppable_post', text: 'Shoppable Instagram post', stage: 'Purchase' },
-  { id: 'exclusive_community', text: 'Exclusive member community', stage: 'Loyalty' },
-  { id: 'ugc_campaign', text: 'User-generated content campaign', stage: 'Advocacy' },
-  { id: 'influencer_review', text: 'Influencer review content', stage: 'Consideration' },
-  { id: 'flash_sale', text: 'Flash sale countdown story', stage: 'Purchase' },
-  { id: 'hashtag_challenge', text: 'Brand hashtag challenge', stage: 'Awareness' },
-  { id: 'loyalty_reward', text: 'Loyalty reward social post', stage: 'Loyalty' },
-  { id: 'referral_programme', text: 'Social referral programme', stage: 'Advocacy' },
-]
-
-export const PLATFORM_CATEGORIES = {
-  'Social Networking': ['Facebook', 'Instagram', 'Threads'],
-  'Video Sharing': ['YouTube', 'TikTok', 'Vimeo'],
-  'Professional Networking': ['LinkedIn'],
-  'Social Commerce': ['Pinterest', 'Instagram Shopping', 'TikTok Shop'],
-  'Community Platforms': ['Reddit', 'Discord', 'WhatsApp'],
-  'Content Discovery': ['Pinterest', 'Flipboard', 'Medium'],
+// ─── NIKE BRIEF ──────────────────────────────────────────────
+export const NIKE_BRIEF = {
+  client: 'Nike',
+  industry: 'Sports & Apparel',
+  tagline: 'Just Do It',
+  situation: 'Nike is the world\'s leading sports brand but faces growing challenges on social media. Organic reach has declined 40% in 18 months. Competitors Adidas and New Balance are gaining ground with Gen Z audiences. Nike\'s community of existing fans is highly engaged but the brand is struggling to attract new younger audiences. The 18–24 female segment is a priority growth area — currently underrepresented in Nike\'s social following despite being the fastest-growing segment in sports participation.',
+  challenge: 'Develop a social media strategy that reignites Nike\'s relevance with 18–24 female audiences while maintaining the brand\'s authority with its existing community.',
+  currentPlatforms: ['Instagram', 'TikTok', 'YouTube', 'Twitter/X', 'Facebook'],
+  tone: 'Inspirational, bold, motivating, authentic',
+  audience: {
+    primary: '18–24 female, fitness-conscious, aspirational, active on TikTok and Instagram',
+    secondary: '25–35 male and female, existing Nike community, achievement-driven',
+    insight: 'Nike\'s target audience uses social media to express identity, find motivation and connect with communities that share their values. They are sceptical of corporate advertising but respond strongly to authentic stories and peer recommendations.',
+  },
 }
+
+// ─── B1A1: PROS & CONS ───────────────────────────────────────
+export const PROS_CONS_STATEMENTS = [
+  { id: 'direct_engagement', text: 'Direct engagement with customers at scale', correct: 'benefit' as const },
+  { id: 'reputation_risk', text: 'Reputation risk — a single negative post can go viral', correct: 'limitation' as const },
+  { id: 'community_building', text: 'Community building around shared values', correct: 'benefit' as const },
+  { id: 'misinformation', text: 'Misinformation can spread rapidly and damage brands', correct: 'limitation' as const },
+  { id: 'realtime_feedback', text: 'Real-time customer feedback and insight', correct: 'benefit' as const },
+  { id: 'content_saturation', text: 'Content saturation makes cut-through increasingly difficult', correct: 'limitation' as const },
+  { id: 'low_cost_reach', text: 'Low-cost organic reach potential for authentic content', correct: 'benefit' as const },
+  { id: 'algorithm_dependency', text: 'Algorithm changes can eliminate reach overnight', correct: 'limitation' as const },
+  { id: 'ugc_power', text: 'User-generated content provides authentic social proof', correct: 'benefit' as const },
+  { id: 'declining_organic', text: 'Organic reach has declined significantly — often below 2% on Facebook', correct: 'limitation' as const },
+]
+
+// ─── B1A2: CUSTOMER JOURNEY ──────────────────────────────────
+export const JOURNEY_STAGES = ['Awareness', 'Consideration', 'Purchase', 'Loyalty', 'Advocacy'] as const
+export type JourneyStage = typeof JOURNEY_STAGES[number]
+
+export const JOURNEY_ACTIVITIES = [
+  { id: 'viral_video', text: 'Viral campaign video featuring real athletes', stage: 'Awareness' as JourneyStage },
+  { id: 'product_comparison', text: 'Carousel post comparing running shoe features', stage: 'Consideration' as JourneyStage },
+  { id: 'shoppable_post', text: 'Shoppable Instagram post with direct checkout', stage: 'Purchase' as JourneyStage },
+  { id: 'exclusive_community', text: 'Nike Run Club community content and challenges', stage: 'Loyalty' as JourneyStage },
+  { id: 'ugc_campaign', text: '#JustDoIt user-generated content challenge', stage: 'Advocacy' as JourneyStage },
+  { id: 'influencer_review', text: 'Micro-influencer honest review of new trainer', stage: 'Consideration' as JourneyStage },
+  { id: 'flash_sale', text: 'Flash sale countdown story with swipe-up link', stage: 'Purchase' as JourneyStage },
+  { id: 'hashtag_challenge', text: 'TikTok hashtag challenge for new campaign', stage: 'Awareness' as JourneyStage },
+  { id: 'loyalty_reward', text: 'Exclusive NikePlus member early access post', stage: 'Loyalty' as JourneyStage },
+  { id: 'referral_programme', text: 'Social referral programme — share to earn rewards', stage: 'Advocacy' as JourneyStage },
+]
+
+// ─── B1A3: PLATFORM CLASSIFICATION ───────────────────────────
+export const PLATFORM_CATEGORIES_LIST = [
+  'Social Networking',
+  'Video Sharing',
+  'Professional Networking',
+  'Social Commerce',
+  'Community Platforms',
+] as const
 
 export const PLATFORMS_TO_CATEGORISE = [
   { id: 'facebook', name: 'Facebook', correct: 'Social Networking' },
   { id: 'youtube', name: 'YouTube', correct: 'Video Sharing' },
   { id: 'linkedin', name: 'LinkedIn', correct: 'Professional Networking' },
   { id: 'tiktok', name: 'TikTok', correct: 'Video Sharing' },
-  { id: 'reddit', name: 'Reddit', correct: 'Community Platforms' },
-  { id: 'pinterest', name: 'Pinterest', correct: 'Social Commerce' },
-  { id: 'discord', name: 'Discord', correct: 'Community Platforms' },
+  { id: 'instagram_shopping', name: 'Instagram Shopping', correct: 'Social Commerce' },
+  { id: 'tiktok_shop', name: 'TikTok Shop', correct: 'Social Commerce' },
+  { id: 'whatsapp', name: 'WhatsApp Communities', correct: 'Community Platforms' },
   { id: 'instagram', name: 'Instagram', correct: 'Social Networking' },
 ]
 
-export const PLATFORM_CATEGORIES_LIST = ['Social Networking', 'Video Sharing', 'Professional Networking', 'Social Commerce', 'Community Platforms']
+// ─── B2A1: ATTENTION AUDIT ───────────────────────────────────
+export const ATTENTION_POSTS = [
+  {
+    id: 'n1',
+    format: 'TikTok Reel',
+    description: 'Black screen. White text fades in: "She told her she wasn\'t built for it." Cut to: woman finishing a marathon. Nike swoosh. No voiceover. 18 seconds.',
+    verdict: 'stop' as const,
+    stopFactors: ['Emotion', 'Surprise', 'Visual impact'],
+  },
+  {
+    id: 'n2',
+    format: 'Instagram Static',
+    description: 'Flat lay product shot of three Nike trainers on a white background. Caption: "New colourways available now. Shop via link in bio." Three hashtags.',
+    verdict: 'scroll' as const,
+    stopFactors: ['Visual impact'],
+  },
+  {
+    id: 'n3',
+    format: 'Instagram Reel',
+    description: 'Slow-motion shot of a woman mid-sprint, rain, crowd blurred behind her. Just Do It logo appears in last frame. No text overlay. Music: low, building.',
+    verdict: 'stop' as const,
+    stopFactors: ['Visual impact', 'Emotion'],
+  },
+  {
+    id: 'n4',
+    format: 'TikTok',
+    description: '"POV: you said you\'d just do a quick 5k" — text over footage of someone 10km in, completely out of breath, still going. Relatable caption.',
+    verdict: 'stop' as const,
+    stopFactors: ['Relevance', 'Surprise', 'Emotion'],
+  },
+  {
+    id: 'n5',
+    format: 'Instagram Carousel',
+    description: '"5 reasons your running form is slowing you down" — slide 1 is a strong hook with a bold graphic, slides 2–5 break down each reason with illustrations.',
+    verdict: 'stop' as const,
+    stopFactors: ['Value', 'Relevance'],
+  },
+]
 
-export const ATTENTION_POSTS: Record<Brand, { id: string; description: string; stopFactors: string[] }[]> = {
-  Nike: [
-    { id: 'n1', description: 'Black screen. White text: "You weren\'t born a runner. You became one." No logo until final frame.', stopFactors: ['Emotion', 'Surprise', 'Relevance'] },
-    { id: 'n2', description: 'Static product shot of new trainers on white background. Price tag visible. No copy.', stopFactors: ['Visual impact'] },
-    { id: 'n3', description: 'Slow-motion athlete mid-race, rain, crowd blurred. Just Do It logo. No text.', stopFactors: ['Visual impact', 'Emotion'] },
-  ],
-  Netflix: [
-    { id: 'nf1', description: '"POV: you said you\'d watch one episode" — dark room, laptop glow, 3am timestamp.', stopFactors: ['Relevance', 'Surprise', 'Emotion'] },
-    { id: 'nf2', description: 'New release poster. Show title. "Now Streaming" text. Netflix logo.', stopFactors: ['Relevance'] },
-    { id: 'nf3', description: 'Character staring directly at camera. No text. Just eyes. 3 seconds.', stopFactors: ['Visual impact', 'Surprise'] },
-  ],
-  Airbnb: [
-    { id: 'ab1', description: 'Morning light through curtains. Coffee steam. View of mountains. No text for 2 seconds.', stopFactors: ['Visual impact', 'Emotion', 'Value'] },
-    { id: 'ab2', description: '"The hotel was £180/night. This was £60." Side-by-side comparison.', stopFactors: ['Value', 'Surprise', 'Relevance'] },
-    { id: 'ab3', description: 'Host smiling, handing keys. Guest hugging. Warm colour grade.', stopFactors: ['Emotion'] },
-  ],
-  Spotify: [
-    { id: 'sp1', description: '"Your Tuesday 3pm playlist says everything about you." Colourful graphic, no song titles.', stopFactors: ['Relevance', 'Surprise', 'Emotion'] },
-    { id: 'sp2', description: 'Artist name. Album cover. Release date. Stream now button.', stopFactors: ['Relevance'] },
-    { id: 'sp3', description: '"87% of people who like this also cry in the car alone." Neon text on black.', stopFactors: ['Surprise', 'Emotion', 'Relevance'] },
-  ],
-  Innocent: [
-    { id: 'in1', description: '"We put the \'no\' in smoothie. Wait, that\'s wrong." Hand-drawn text on white.', stopFactors: ['Surprise', 'Emotion'] },
-    { id: 'in2', description: 'Close-up of strawberries being blended. Slow motion. No copy.', stopFactors: ['Visual impact'] },
-    { id: 'in3', description: '"A third of your daily fruit in a bottle. Or you could eat 1.5 mangoes. Your call."', stopFactors: ['Value', 'Surprise', 'Relevance'] },
-  ],
-}
+export const STOP_FACTORS = ['Visual impact', 'Relevance', 'Emotion', 'Surprise', 'Value'] as const
 
-export const STOP_FACTORS = ['Visual impact', 'Relevance', 'Emotion', 'Surprise', 'Value']
+// ─── B2A2: BEHAVIOUR MAPPING ─────────────────────────────────
+export const AUDIENCE_MOTIVATIONS = [
+  { id: 'achievement', label: 'Achievement & self-improvement', correct: true },
+  { id: 'identity', label: 'Athletic identity & belonging', correct: true },
+  { id: 'inspiration', label: 'Inspiration and motivation', correct: true },
+  { id: 'community', label: 'Community and shared goals', correct: true },
+  { id: 'professional', label: 'Professional networking', correct: false },
+  { id: 'b2b', label: 'Business development', correct: false },
+  { id: 'news', label: 'Breaking news and politics', correct: false },
+  { id: 'bargain', label: 'Finding the best price deals', correct: false },
+]
 
-export const AUDIENCE_MOTIVATIONS: Record<Brand, { motivations: string[]; painPoints: string[]; contentPrefs: string[]; platforms: string[] }> = {
-  Nike: {
-    motivations: ['Achievement', 'Self-improvement', 'Community belonging', 'Athletic identity'],
-    painPoints: ['Lack of motivation', 'Injury fear', 'Expensive kit', 'Time constraints'],
-    contentPrefs: ['Athlete stories', 'Training tips', 'Product launches', 'Community challenges'],
-    platforms: ['Instagram', 'TikTok', 'YouTube'],
-  },
-  Netflix: {
-    motivations: ['Entertainment escape', 'Social connection through shared shows', 'Discovery of new content', 'FOMO avoidance'],
-    painPoints: ['Too much choice', 'Subscription fatigue', 'Spoilers', 'Running out of shows'],
-    contentPrefs: ['Trailers & clips', 'Behind the scenes', 'Memes & reactions', 'Character spotlights'],
-    platforms: ['Twitter/X', 'Instagram', 'TikTok'],
-  },
-  Airbnb: {
-    motivations: ['Unique experiences', 'Value vs hotels', 'Local authenticity', 'Travel inspiration'],
-    painPoints: ['Trust & safety concerns', 'Unexpected costs', 'Cancellation anxiety', 'Quality inconsistency'],
-    contentPrefs: ['Stunning property photography', 'Destination guides', 'Host stories', 'Travel tips'],
-    platforms: ['Instagram', 'Pinterest', 'TikTok'],
-  },
-  Spotify: {
-    motivations: ['Mood enhancement', 'Discovery of new music', 'Personal identity expression', 'Social sharing'],
-    painPoints: ['Algorithm getting it wrong', 'Artist payouts debate', 'Podcast overload', 'Sound quality'],
-    contentPrefs: ['Playlist reveals', 'Artist content', 'Data-driven insights', 'Cultural commentary'],
-    platforms: ['Instagram', 'TikTok', 'Twitter/X'],
-  },
-  Innocent: {
-    motivations: ['Health improvement', 'Convenience', 'Sustainability values', 'Taste enjoyment'],
-    painPoints: ['Price vs regular juice', 'Sugar content concerns', 'Plastic packaging', 'Availability'],
-    contentPrefs: ['Humorous content', 'Behind-the-scenes', 'Sustainability stories', 'Recipe ideas'],
-    platforms: ['Instagram', 'Twitter/X', 'Facebook'],
-  },
-}
+export const AUDIENCE_PAIN_POINTS = [
+  { id: 'motivation', label: 'Lack of motivation to stay consistent', correct: true },
+  { id: 'expensive', label: 'Perception that Nike is too expensive', correct: true },
+  { id: 'authenticity', label: 'Scepticism of corporate brand messaging', correct: true },
+  { id: 'injury', label: 'Fear of injury putting them off training', correct: true },
+  { id: 'b2b_pain', label: 'Finding enterprise software solutions', correct: false },
+  { id: 'commute', label: 'Long commute times', correct: false },
+]
 
+export const AUDIENCE_PLATFORMS = [
+  { id: 'instagram', label: 'Instagram', correct: true },
+  { id: 'tiktok', label: 'TikTok', correct: true },
+  { id: 'youtube', label: 'YouTube', correct: true },
+  { id: 'linkedin', label: 'LinkedIn', correct: false },
+  { id: 'twitter', label: 'Twitter/X', correct: false },
+  { id: 'facebook', label: 'Facebook', correct: false },
+]
+
+// ─── B2A3: ETHICAL DILEMMAS ───────────────────────────────────
 export const ETHICAL_SCENARIOS = [
   {
     id: 'influencer_disclosure',
     title: 'Influencer Disclosure',
-    scenario: 'An influencer partner posts about your brand without clearly labelling it as a paid partnership. Their post gets 200k likes.',
+    scenario: 'A Nike-sponsored athlete posts a glowing review of the new Nike Air Max without adding #ad or #sponsored. The post gets 800,000 likes and drives significant traffic to Nike.com.',
     options: [
-      { id: 'a', text: 'Leave it — the post is performing well and disclosure would reduce engagement', risk: 'high', correct: false },
-      { id: 'b', text: 'Ask them to add #ad — it\'s required by ASA guidelines and protects both parties', risk: 'low', correct: true },
-      { id: 'c', text: 'Delete the post and repost with proper disclosure', risk: 'medium', correct: false },
+      { id: 'a', text: 'Leave it — it\'s performing well and adding a disclosure tag would reduce its authenticity and engagement', risk: 'high', correct: false },
+      { id: 'b', text: 'Ask the athlete to add a clear #ad label — it\'s required by ASA guidelines regardless of performance', risk: 'low', correct: true },
+      { id: 'c', text: 'Delete the post and repost with disclosure once it stops trending', risk: 'medium', correct: false },
     ],
-    learning: 'The ASA requires clear disclosure of paid partnerships. "#ad" or "paid partnership" must be clearly visible. Brands are responsible for ensuring influencers comply.',
+    learning: 'The ASA requires clear upfront disclosure of all paid partnerships. Performance doesn\'t override legal requirements. Both Nike and the athlete are liable.',
   },
   {
-    id: 'data_privacy',
-    title: 'Data & Privacy',
-    scenario: 'You want to retarget website visitors with ads. A colleague suggests you can also use your email list without asking permission.',
+    id: 'body_image',
+    title: 'Body Image & Targeting',
+    scenario: 'Nike\'s paid social team wants to target women aged 18–24 who have shown interest in "weight loss" and "body transformation" content with ads for a new training programme.',
     options: [
-      { id: 'a', text: 'Use the email list — they\'ve already engaged with you so it\'s fine', risk: 'high', correct: false },
-      { id: 'b', text: 'Only use website retargeting — email list requires explicit consent for ad targeting', risk: 'low', correct: true },
-      { id: 'c', text: 'Ask the email list for consent first before using them for ad targeting', risk: 'low', correct: true },
+      { id: 'a', text: 'Proceed — this is a standard interest-based targeting approach that\'s perfectly legal', risk: 'medium', correct: false },
+      { id: 'b', text: 'Reframe the targeting around "fitness goals" and "active lifestyle" rather than weight loss — aligns with Nike\'s values and avoids potential harm', risk: 'low', correct: true },
+      { id: 'c', text: 'Don\'t run any targeted ads at this demographic', risk: 'medium', correct: false },
     ],
-    learning: 'GDPR requires explicit consent for using personal data in ad targeting. Purchasing intent from website visits is different from email marketing consent.',
+    learning: 'Nike\'s brand values centre on empowerment, not body image anxiety. Targeting weight loss content can exploit insecurities — ethical targeting aligns with brand positioning and user wellbeing.',
   },
   {
     id: 'accessibility',
-    title: 'Accessibility',
-    scenario: 'Your new Instagram campaign uses text overlaid on fast-moving video. No captions or alt text are included.',
+    title: 'Content Accessibility',
+    scenario: 'Nike launches a major campaign on TikTok using fast-cut video with text overlays and music. No captions or subtitles are included anywhere in the content.',
     options: [
-      { id: 'a', text: 'Launch it — most users have sound on and can read the text', risk: 'high', correct: false },
-      { id: 'b', text: 'Add captions to all videos and alt text to images before launching', risk: 'low', correct: true },
+      { id: 'a', text: 'Launch as planned — TikTok\'s primary audience watches with sound on so captions aren\'t needed', risk: 'high', correct: false },
+      { id: 'b', text: 'Add auto-generated captions to all videos before launching — it takes minutes and makes content accessible to all', risk: 'low', correct: true },
       { id: 'c', text: 'Add captions only to the highest-performing posts after launch', risk: 'medium', correct: false },
     ],
-    learning: 'Accessible content reaches more people and is the right thing to do. 1 in 5 people have a disability. Captions also help the 85% of social users who watch video without sound.',
+    learning: '85% of social video is watched without sound. 1 in 5 people have a disability. Accessible content reaches more people, signals brand values, and is increasingly expected. ASA and platform guidelines recommend it.',
   },
 ]
 
+// ─── B2A4: COMMUNITY TACTICS ──────────────────────────────────
 export const COMMUNITY_TACTICS = [
-  { id: 'ugc', label: 'User-Generated Content Campaigns', desc: 'Encourage followers to create and share brand content', impact: 'high' },
-  { id: 'polls', label: 'Polls & Interactive Stories', desc: 'Drive engagement through questions and votes', impact: 'medium' },
-  { id: 'challenges', label: 'Hashtag Challenges', desc: 'Create viral participation moments', impact: 'high' },
-  { id: 'groups', label: 'Branded Community Groups', desc: 'Build owned communities on Facebook or Discord', impact: 'high' },
-  { id: 'live', label: 'Live Events & Q&As', desc: 'Real-time engagement with your audience', impact: 'medium' },
-  { id: 'ambassador', label: 'Ambassador Programmes', desc: 'Recruit loyal customers as brand advocates', impact: 'high' },
-  { id: 'exclusives', label: 'Exclusive Member Content', desc: 'Reward community members with early access', impact: 'medium' },
-  { id: 'co_creation', label: 'Co-creation Campaigns', desc: 'Involve community in product or content decisions', impact: 'high' },
+  { id: 'ugc', label: 'User-Generated Content Campaigns', desc: 'Encourage fans to create and share content around a hashtag or challenge', impact: 'high' as const },
+  { id: 'challenges', label: 'Hashtag Challenges', desc: 'Create viral participation moments (#JustDoIt style)', impact: 'high' as const },
+  { id: 'run_club', label: 'Nike Run Club Community Content', desc: 'Content that rewards and showcases the existing community', impact: 'high' as const },
+  { id: 'ambassador', label: 'Ambassador Programme', desc: 'Recruit passionate customers as local Nike ambassadors', impact: 'high' as const },
+  { id: 'polls', label: 'Polls & Interactive Stories', desc: 'Drive two-way engagement through questions and votes', impact: 'medium' as const },
+  { id: 'live', label: 'Athlete Live Q&As', desc: 'Real-time access to Nike athletes — exclusive, authentic', impact: 'medium' as const },
+  { id: 'co_creation', label: 'Community Co-Creation', desc: 'Involve the community in content or product decisions', impact: 'medium' as const },
+  { id: 'exclusives', label: 'Exclusive Member Content', desc: 'Reward NikePlus members with early access and behind-the-scenes', impact: 'medium' as const },
 ]
 
-export const PLATFORM_PRIORITY_LEVELS = ['Primary', 'Secondary', 'Monitor', 'Avoid'] as const
-export const PLATFORMS_TO_PRIORITISE = ['Instagram', 'TikTok', 'Facebook', 'LinkedIn', 'YouTube', 'Twitter/X', 'Pinterest', 'Snapchat']
+// ─── B2A5: CAMPAIGN OBJECTIVES ────────────────────────────────
+export const OBJECTIVE_OPTIONS = [
+  {
+    id: 'awareness_reach',
+    label: 'Increase brand awareness among 18–24 female audience',
+    type: 'Awareness',
+    metric: 'Reach 5M unique users in target segment within 3 months',
+    cascades: { platforms: ['TikTok', 'Instagram'], budget: { content: 30, paid: 35, influencers: 25, community: 5, analytics: 5 } },
+  },
+  {
+    id: 'engagement_community',
+    label: 'Build an engaged Nike women\'s community on social',
+    type: 'Engagement',
+    metric: 'Achieve 4%+ engagement rate and grow community by 20% in 6 months',
+    cascades: { platforms: ['Instagram', 'TikTok'], budget: { content: 25, paid: 20, influencers: 20, community: 30, analytics: 5 } },
+  },
+  {
+    id: 'conversion_sales',
+    label: 'Drive direct sales from social to Nike.com',
+    type: 'Conversion',
+    metric: 'Achieve 3x ROAS from paid social campaigns within quarter',
+    cascades: { platforms: ['Instagram', 'TikTok'], budget: { content: 20, paid: 45, influencers: 15, community: 10, analytics: 10 } },
+  },
+  {
+    id: 'retention_loyalty',
+    label: 'Increase NikePlus member engagement and retention',
+    type: 'Retention',
+    metric: 'Improve member social engagement rate by 30% over 6 months',
+    cascades: { platforms: ['Instagram', 'YouTube'], budget: { content: 35, paid: 15, influencers: 10, community: 35, analytics: 5 } },
+  },
+  {
+    id: 'advocacy_ugc',
+    label: 'Generate user-generated content and brand advocacy',
+    type: 'Advocacy',
+    metric: '10,000 UGC posts with Nike hashtag in campaign period',
+    cascades: { platforms: ['TikTok', 'Instagram'], budget: { content: 20, paid: 15, influencers: 30, community: 30, analytics: 5 } },
+  },
+]
 
+// ─── B3A1: PLATFORM SELECTION ────────────────────────────────
+export const PLATFORM_PRIORITY_OPTIONS = ['Primary', 'Secondary', 'Monitor', 'Not relevant'] as const
+export const PLATFORMS_TO_PRIORITISE = [
+  { id: 'instagram', name: 'Instagram', audienceFit: 'high', nikeStrength: 'high', objectiveFit: ['awareness_reach','engagement_community','conversion_sales','advocacy_ugc'] },
+  { id: 'tiktok', name: 'TikTok', audienceFit: 'high', nikeStrength: 'medium', objectiveFit: ['awareness_reach','engagement_community','conversion_sales','advocacy_ugc'] },
+  { id: 'youtube', name: 'YouTube', audienceFit: 'medium', nikeStrength: 'high', objectiveFit: ['awareness_reach','retention_loyalty'] },
+  { id: 'twitter_x', name: 'Twitter/X', audienceFit: 'medium', nikeStrength: 'medium', objectiveFit: ['awareness_reach','engagement_community'] },
+  { id: 'facebook', name: 'Facebook', audienceFit: 'low', nikeStrength: 'low', objectiveFit: ['conversion_sales'] },
+  { id: 'linkedin', name: 'LinkedIn', audienceFit: 'low', nikeStrength: 'low', objectiveFit: [] },
+  { id: 'pinterest', name: 'Pinterest', audienceFit: 'low', nikeStrength: 'low', objectiveFit: ['conversion_sales'] },
+]
+
+// ─── B3A2: ALGORITHM DETECTIVE ────────────────────────────────
 export const ALGORITHM_SCENARIOS = [
   {
-    id: 'post_a',
+    id: 'tiktok_viral',
     platform: 'TikTok',
-    description: 'A 12-second video with no hashtags, filmed vertically, posted by a micro-creator. Gets 2.3M views.',
+    description: 'A Nike creator account with 12,000 followers posts a 15-second video of a woman finishing her first 10k run, crying. No hashtags. Gets 4.2M views in 48 hours.',
     dominantFactor: 'Watch Time',
-    explanation: 'TikTok\'s algorithm prioritises completion rate and replays above all else. A short, compelling video that people watch again scores exponentially higher than longer content with low completion.',
+    explanation: 'TikTok\'s algorithm prioritises completion rate and replays above everything. A 15-second emotionally compelling video that people replay sends the strongest possible signal — the algorithm pushed it to millions regardless of follower count.',
   },
   {
-    id: 'post_b',
+    id: 'instagram_saves',
     platform: 'Instagram',
-    description: 'A carousel post asking "Swipe to see which one you are →" gets 4x more reach than the same brand\'s product posts.',
-    dominantFactor: 'Engagement',
-    explanation: 'Instagram rewards content that drives interactions. Carousels that encourage swiping signal strong engagement to the algorithm, dramatically increasing reach.',
+    description: '"5 running form mistakes that are slowing you down" carousel by Nike gets 3x more reach than any product post from the same week, despite half the likes.',
+    dominantFactor: 'Saves',
+    explanation: 'Instagram\'s algorithm weighs saves as the highest-value engagement signal — users bookmarking content signals intent to return. Educational carousels consistently generate more saves than product posts, triggering broader distribution.',
   },
   {
-    id: 'post_c',
-    platform: 'LinkedIn',
-    description: 'A personal story about career failure outperforms a polished company announcement by 10x.',
-    dominantFactor: 'Relevance',
-    explanation: 'LinkedIn\'s algorithm prioritises content that resonates with specific professional communities. Authentic personal narratives match user intent far better than corporate messaging.',
+    id: 'youtube_avd',
+    platform: 'YouTube',
+    description: 'A 22-minute Nike documentary about an unknown marathon runner outperforms a polished 90-second product launch video by 10x in long-term views.',
+    dominantFactor: 'Watch Time',
+    explanation: 'YouTube\'s algorithm tracks Average View Duration (AVD). A 22-minute video where viewers stay for 18+ minutes generates far more watch time than a 90-second video. More watch time = more ad revenue for YouTube = algorithmic reward.',
   },
 ]
 
-export const ALGORITHM_FACTORS = ['Watch Time', 'Engagement', 'Shares', 'Saves', 'Relevance', 'Recency']
+export const ALGORITHM_FACTORS = ['Watch Time', 'Engagement', 'Shares', 'Saves', 'Relevance', 'Recency'] as const
 
-export const CONTENT_EXAMPLES: Record<Brand, { id: string; format: string; description: string; verdict: 'stop' | 'scroll'; reason: string }[]> = {
-  Nike: [
-    { id: 'n1', format: 'Reel', description: 'Athlete training montage, motivational music, logo at end. 45 seconds.', verdict: 'stop', reason: 'Emotional resonance, aspirational identity' },
-    { id: 'n2', format: 'Static post', description: 'Product flat lay, 3 paragraphs of copy about features, 4 hashtags.', verdict: 'scroll', reason: 'Too much text, no immediate hook' },
-  ],
-  Netflix: [
-    { id: 'nf1', format: 'TikTok', description: '"Tell me you\'re a Netflix person without telling me you\'re a Netflix person" — relatable text over cosy home footage.', verdict: 'stop', reason: 'Trend format, high relevance, invitation to engage' },
-    { id: 'nf2', format: 'Static post', description: 'New show announcement with poster image and list of cast members.', verdict: 'scroll', reason: 'Informational, no emotional hook, feels like an ad' },
-  ],
-  Airbnb: [
-    { id: 'ab1', format: 'Reel', description: 'Sunrise timelapse from a clifftop Airbnb. No text for 5 seconds. Just the view.', verdict: 'stop', reason: 'Visual impact, aspiration, slow reveal creates curiosity' },
-    { id: 'ab2', format: 'Carousel', description: 'Top 10 Airbnbs in Portugal with prices and links.', verdict: 'stop', reason: 'High value, encourages swiping, purchase intent' },
-  ],
-  Spotify: [
-    { id: 'sp1', format: 'TikTok', description: '"The song that lives rent-free in your head at 2am" — comment with yours. 847k comments.', verdict: 'stop', reason: 'Community participation, relatable moment, FOMO to comment' },
-    { id: 'sp2', format: 'Static post', description: 'New podcast episode graphic. Title and guest name. Listen now.', verdict: 'scroll', reason: 'Generic format, no emotional hook, looks like every other podcast post' },
-  ],
-  Innocent: [
-    { id: 'in1', format: 'Static post', description: '"We\'ve hidden a tiny man in this bottle. No we haven\'t. But wouldn\'t that be wild?" — product shot.', verdict: 'stop', reason: 'Unexpected humour, brand personality, invites engagement' },
-    { id: 'in2', format: 'Reel', description: 'Smoothie being poured in slow motion. Upbeat music. Logo.', verdict: 'scroll', reason: 'Generic FMCG content, no differentiation from competitors' },
-  ],
-}
+// ─── B4A1: CONTENT FORMAT SELECTION ──────────────────────────
+export const FORMAT_OBJECTIVES = [
+  {
+    objective: 'Drive brand awareness among new audiences',
+    formats: ['Reels / Short Video', 'TikTok Originals'],
+    reason: 'Interest-graph recommendation engines (TikTok, Reels) distribute content to non-followers based on performance — the only format with genuine organic discovery potential.',
+    wrongFormats: ['Stories', 'Polls'],
+  },
+  {
+    objective: 'Educate audience about product features',
+    formats: ['Carousels', 'Long-form Video (YouTube)'],
+    reason: 'Carousels allow sequential information delivery with high save rates. YouTube supports in-depth tutorials. Both reward attention rather than demanding it.',
+    wrongFormats: ['Static Posts', 'Livestreams'],
+  },
+  {
+    objective: 'Build daily community touchpoints',
+    formats: ['Stories', 'Polls'],
+    reason: 'Stories create daily intimacy with existing followers. Polls turn passive consumption into two-way conversation. Both are relationship tools, not discovery tools.',
+    wrongFormats: ['Reels / Short Video', 'Carousels'],
+  },
+  {
+    objective: 'Generate UGC and community participation',
+    formats: ['Hashtag Challenges', 'Polls'],
+    reason: 'Challenges invite participation at scale. Polls provide immediate, low-friction interaction that generates data and signals community health to algorithms.',
+    wrongFormats: ['Static Posts', 'Long-form Video (YouTube)'],
+  },
+  {
+    objective: 'Drive direct product sales',
+    formats: ['Shoppable Posts', 'Stories with Link'],
+    reason: 'Social commerce formats (Instagram Shopping, TikTok Shop) collapse the discovery-to-purchase journey. Stories with link stickers drive high-intent traffic with minimal friction.',
+    wrongFormats: ['Livestreams', 'Polls'],
+  },
+]
 
-export const CAMPAIGN_PLATFORMS: Record<Brand, { name: string; message: string; promise: string }[]> = {
-  Nike: [
-    { name: 'Move More Together', message: 'Every step counts when we move as one', promise: 'We will celebrate every run, not just the fast ones' },
-    { name: 'Built Different', message: 'Champions aren\'t born. They\'re built, rep by rep.', promise: 'We will show the work behind the win' },
-  ],
-  Netflix: [
-    { name: 'Watch More, Regret Less', message: 'Life\'s too short for bad TV', promise: 'We will always have something worth staying up for' },
-    { name: 'Your Next Obsession Awaits', message: 'You\'re one episode away from a new favourite', promise: 'We will never let you run out of things to love' },
-  ],
-  Airbnb: [
-    { name: 'Stay Different', message: 'Hotels are for tourists. Airbnb is for travellers.', promise: 'We will help you live the destination, not just visit it' },
-    { name: 'Belong Anywhere', message: 'Home is wherever you choose to stay', promise: 'We will make every stay feel like you belong there' },
-  ],
-  Spotify: [
-    { name: 'Soundtrack Your Life', message: 'Every moment deserves the perfect song', promise: 'We will always know what you need to hear next' },
-    { name: 'Discover What\'s Next', message: 'Your next favourite song hasn\'t found you yet', promise: 'We will introduce you to music that changes everything' },
-  ],
-  Innocent: [
-    { name: 'Good Stuff. Honestly.', message: 'Real fruit, real taste, really good for you', promise: 'We will never sneak anything nasty past you' },
-    { name: 'A Little Healthier, A Lot Happier', message: 'One bottle closer to your five a day', promise: 'We will make healthy feel less like a chore' },
-  ],
-}
+export const ALL_FORMATS = ['Reels / Short Video', 'TikTok Originals', 'Carousels', 'Stories', 'Static Posts', 'Polls', 'Hashtag Challenges', 'Livestreams', 'Shoppable Posts', 'Long-form Video (YouTube)', 'Stories with Link'] as const
 
-export const CONTENT_FORMATS = [
-  { id: 'static', label: 'Static Posts', desc: 'Single image or graphic — evergreen, brand consistent' },
-  { id: 'carousels', label: 'Carousels', desc: 'Multi-image swipeable — high engagement, educational' },
-  { id: 'stories', label: 'Stories', desc: 'Ephemeral 24hr content — casual, polls, behind-the-scenes' },
-  { id: 'reels', label: 'Reels / Short Video', desc: 'High reach potential — entertaining, trending formats' },
-  { id: 'livestreams', label: 'Livestreams', desc: 'Real-time engagement — launches, Q&As, events' },
-  { id: 'polls', label: 'Polls & Interactive', desc: 'Community engagement — opinions, preferences' },
-  { id: 'ugc', label: 'UGC & Reposts', desc: 'Authentic social proof — community content' },
-  { id: 'longform', label: 'Long-form Video', desc: 'YouTube — tutorials, documentaries, deep dives' },
+// ─── B4A2: CAMPAIGN PLATFORM WORKSHOP ────────────────────────
+export const CAMPAIGN_KEYWORDS = ['community', 'authentic', 'movement', 'fearless', 'powerful', 'unstoppable', 'inspire', 'bold', 'real', 'transform', 'challenge', 'together', 'represent', 'break', 'prove', 'refuse', 'belong', 'rise', 'own', 'define', 'relentless', 'run', 'train', 'stronger', 'identity', 'purpose', 'sport', 'athlete', 'female', 'women', 'story', 'moment', 'journey', 'win', 'struggle', 'achieve']
+
+// ─── B4A3: CREATIVE CONCEPT STUDIO ───────────────────────────
+export const REEL_HOOK_TYPES = [
+  { id: 'curiosity_gap', label: 'Curiosity Gap', desc: 'Open with a question or unresolved tension that compels viewers to keep watching' },
+  { id: 'bold_statement', label: 'Bold Statement', desc: 'Lead with a provocative claim or strong opinion that stops the scroll' },
+  { id: 'social_proof', label: 'Social Proof', desc: 'Open with a real story, review or community moment that creates credibility' },
+  { id: 'fomo', label: 'FOMO', desc: 'Create urgency or exclusivity — "everyone is doing this except you"' },
+  { id: 'relatable_pov', label: 'Relatable POV', desc: 'POV-style format that puts the viewer in the situation immediately' },
+  { id: 'transformation', label: 'Transformation', desc: 'Before/after or journey arc that creates emotional investment from second one' },
+]
+
+export const CAROUSEL_COVER_APPROACHES = [
+  { id: 'bold_headline', label: 'Bold headline with a number', desc: '"5 things Nike women do differently" — clear promise of value' },
+  { id: 'provocative_question', label: 'Provocative question', desc: '"Are you training wrong?" — creates curiosity and self-relevance' },
+  { id: 'strong_visual', label: 'Strong visual, minimal text', desc: 'Let the image do the work — aspirational or emotionally resonant' },
+  { id: 'contrarian_take', label: 'Contrarian statement', desc: '"Cardio won\'t get you there" — challenges assumption, demands attention' },
+]
+
+export const CAROUSEL_CONTENT_TYPES = [
+  { id: 'educational', label: 'Educational / How-to', desc: 'Teach something specific — high save rate, builds authority' },
+  { id: 'inspirational', label: 'Inspirational / Story', desc: 'Real athlete or community story — emotional, shareable' },
+  { id: 'behind_scenes', label: 'Behind-the-scenes', desc: 'Product design, athlete training, campaign creation — builds authenticity' },
+  { id: 'product_showcase', label: 'Product showcase', desc: 'Feature-led content — works best in consideration stage' },
+  { id: 'community_spotlight', label: 'Community spotlight', desc: 'UGC, customer stories — social proof and community building' },
+]
+
+export const STORY_MECHANICS = [
+  { id: 'poll', label: 'Poll', desc: 'Two-option question — instant engagement, generates data, beats algorithm' },
+  { id: 'question_box', label: 'Question Box', desc: 'Open question — high effort from follower, signals deep engagement' },
+  { id: 'countdown', label: 'Countdown Timer', desc: 'Creates FOMO — works for launches, events, limited drops' },
+  { id: 'ugc_repost', label: 'UGC Repost', desc: 'Sharing community content — authentic, rewards advocates' },
+  { id: 'link_sticker', label: 'Link Sticker', desc: 'Direct traffic driver — product page, sign-up, editorial content' },
+  { id: 'behind_scenes', label: 'Behind-the-scenes', desc: 'Raw, unfiltered — builds intimacy and daily brand habit' },
 ]
 
 export const INFLUENCER_TIERS = [
-  { id: 'nano', label: 'Nano (1K–10K)', desc: 'Highest engagement rates, niche audiences, very authentic, low cost', best: 'Community building, authenticity' },
-  { id: 'micro', label: 'Micro (10K–100K)', desc: 'Strong engagement, targeted niches, trusted voices, affordable', best: 'Brand awareness in specific segments' },
-  { id: 'macro', label: 'Macro (100K–1M)', desc: 'Broad reach, professional content, higher cost, lower engagement %', best: 'Mass awareness campaigns' },
-  { id: 'mega', label: 'Celebrity / Mega (1M+)', desc: 'Maximum reach, premium cost, lower authenticity perception', best: 'Brand repositioning, major launches' },
-  { id: 'ambassador', label: 'Brand Ambassador', desc: 'Long-term partnership, deepest brand alignment, ongoing storytelling', best: 'Sustained brand building' },
+  { id: 'nano', label: 'Nano (1K–10K)', desc: 'Highest engagement, most authentic, niche communities, very low cost', best: 'Community building, local authenticity', engagementRate: '8–15%' },
+  { id: 'micro', label: 'Micro (10K–100K)', desc: 'Strong engagement, targeted niches, trusted voice, affordable', best: 'Segment-specific awareness and conversion', engagementRate: '3–8%' },
+  { id: 'macro', label: 'Macro (100K–1M)', desc: 'Broad reach, professional content, lower engagement %, premium cost', best: 'Mass awareness and credibility', engagementRate: '1–3%' },
+  { id: 'celebrity', label: 'Celebrity / Mega (1M+)', desc: 'Maximum reach, premium cost, lowest engagement %, aspirational', best: 'Brand repositioning, global launches', engagementRate: '0.5–1%' },
+  { id: 'ambassador', label: 'Brand Ambassador', desc: 'Long-term partnership, deepest alignment, ongoing narrative', best: 'Sustained brand building and authenticity', engagementRate: 'Varies — relationship over time' },
 ]
 
+export const INFLUENCER_CONTENT_STYLES = [
+  { id: 'authentic', label: 'Authentic / Unfiltered', desc: 'Raw, honest, no script — highest trust with audience' },
+  { id: 'aspirational', label: 'Aspirational / Lifestyle', desc: 'Shows the life the audience wants — works for premium positioning' },
+  { id: 'educational', label: 'Educational / Tutorial', desc: 'How-to content — positions Nike as expert, high save rate' },
+  { id: 'entertaining', label: 'Entertaining / Humour', desc: 'Comedy, trends, relatable moments — highest share rate' },
+  { id: 'challenge', label: 'Challenge / Participation', desc: 'Invites audience to join — generates UGC and community' },
+]
+
+export const INFLUENCER_KEYWORDS = ['engagement', 'authentic', 'niche', 'community', 'trust', 'audience', 'aligned', 'relevant', 'female', 'sport', 'fitness', 'running', 'nike', 'values', 'long-term', 'micro', 'genuine', 'reach', 'awareness', 'conversion', 'brief', 'creative', 'freedom', 'partnership', 'ambassador']
+
+// ─── B5A1: AUDIENCE TARGETING ────────────────────────────────
 export const TARGETING_OPTIONS = {
   demographics: [
-    { id: 'age_18_24', label: '18–24' }, { id: 'age_25_34', label: '25–34' },
-    { id: 'age_35_44', label: '35–44' }, { id: 'gender_male', label: 'Male' },
-    { id: 'gender_female', label: 'Female' }, { id: 'gender_all', label: 'All Genders' },
-    { id: 'location_uk', label: 'United Kingdom' }, { id: 'location_us', label: 'United States' },
+    { id: 'age_18_24', label: '18–24', recommended: true },
+    { id: 'age_25_34', label: '25–34', recommended: true },
+    { id: 'age_35_44', label: '35–44', recommended: false },
+    { id: 'gender_female', label: 'Female', recommended: true },
+    { id: 'gender_all', label: 'All Genders', recommended: false },
+    { id: 'uk_us', label: 'UK + US', recommended: true },
   ],
   interests: [
-    { id: 'fitness', label: 'Fitness & Sport' }, { id: 'entertainment', label: 'Entertainment' },
-    { id: 'travel', label: 'Travel' }, { id: 'music', label: 'Music' },
-    { id: 'food', label: 'Food & Drink' }, { id: 'fashion', label: 'Fashion' },
-    { id: 'sustainability', label: 'Sustainability' }, { id: 'tech', label: 'Technology' },
+    { id: 'fitness', label: 'Fitness & Sport', recommended: true },
+    { id: 'running', label: 'Running', recommended: true },
+    { id: 'fashion', label: 'Fashion & Style', recommended: true },
+    { id: 'wellness', label: 'Health & Wellness', recommended: true },
+    { id: 'music', label: 'Music', recommended: false },
+    { id: 'gaming', label: 'Gaming', recommended: false },
+    { id: 'travel', label: 'Travel', recommended: false },
+    { id: 'food', label: 'Food & Drink', recommended: false },
   ],
   behaviours: [
-    { id: 'frequent_travellers', label: 'Frequent Travellers' }, { id: 'online_shoppers', label: 'Online Shoppers' },
-    { id: 'app_users', label: 'Mobile App Users' }, { id: 'engaged_shoppers', label: 'Engaged Shoppers' },
+    { id: 'active_shoppers', label: 'Active Sportswear Shoppers', recommended: true },
+    { id: 'app_users', label: 'Fitness App Users', recommended: true },
+    { id: 'engaged_shoppers', label: 'Frequent Online Shoppers', recommended: true },
+    { id: 'event_attendees', label: 'Sports Event Attendees', recommended: true },
+    { id: 'business_travellers', label: 'Business Travellers', recommended: false },
+    { id: 'homeowners', label: 'Homeowners', recommended: false },
   ],
   retargeting: [
-    { id: 'website_visitors', label: 'Website Visitors (30 days)' }, { id: 'video_viewers', label: 'Video Viewers (75%)' },
-    { id: 'page_engagers', label: 'Page Engagers (90 days)' }, { id: 'lookalikes', label: 'Lookalike Audience' },
+    { id: 'website_visitors', label: 'Nike.com Visitors (30 days)', recommended: true },
+    { id: 'video_viewers_75', label: 'Video Viewers 75%+ completion', recommended: true },
+    { id: 'page_engagers', label: 'Nike Page Engagers (90 days)', recommended: true },
+    { id: 'lookalikes', label: 'Lookalike — based on NikePlus members', recommended: true },
+    { id: 'cart_abandoners', label: 'Cart Abandoners (14 days)', recommended: true },
   ],
 }
 
+// ─── B5A2: BUDGET ALLOCATION ──────────────────────────────────
 export const BUDGET_CATEGORIES = [
-  { id: 'content', label: 'Content Creation', desc: 'Production, design, copywriting' },
-  { id: 'paid', label: 'Paid Social Ads', desc: 'Facebook, Instagram, TikTok spend' },
-  { id: 'influencers', label: 'Influencer Partnerships', desc: 'Creator fees and gifting' },
-  { id: 'community', label: 'Community Management', desc: 'Tools, team time, moderation' },
-  { id: 'analytics', label: 'Analytics & Tools', desc: 'Scheduling, listening, reporting' },
+  { id: 'content', label: 'Content Creation', desc: 'Production, design, copywriting, video' },
+  { id: 'paid', label: 'Paid Social Ads', desc: 'Meta, TikTok, YouTube ad spend' },
+  { id: 'influencers', label: 'Influencer Partnerships', desc: 'Creator fees, gifting, ambassador costs' },
+  { id: 'community', label: 'Community Management', desc: 'Tools, moderation, engagement team' },
+  { id: 'analytics', label: 'Analytics & Tools', desc: 'Scheduling, listening, attribution, reporting' },
 ]
 
-export const CAMPAIGN_DATA: Record<Brand, { metric: string; value: string; status: 'good' | 'bad' | 'ok'; insight: string }[]> = {
-  Nike: [
-    { metric: 'Impressions', value: '2.4M', status: 'good', insight: 'Strong reach — campaign is being seen' },
-    { metric: 'Engagement Rate', value: '0.8%', status: 'bad', insight: 'Below 1% benchmark — content not resonating' },
-    { metric: 'Click-Through Rate', value: '0.3%', status: 'bad', insight: 'Low intent — ads not driving action' },
-    { metric: 'Video Completion Rate', value: '62%', status: 'good', insight: 'Above 50% benchmark — video is compelling' },
-    { metric: 'Cost Per Click', value: '£2.40', status: 'ok', insight: 'Acceptable but room to improve' },
-    { metric: 'ROAS', value: '1.8x', status: 'bad', insight: 'Below 3x target — underperforming commercially' },
-  ],
-  Netflix: [
-    { metric: 'Impressions', value: '5.1M', status: 'good', insight: 'Excellent reach for campaign budget' },
-    { metric: 'Engagement Rate', value: '3.2%', status: 'good', insight: 'Strong — audience is engaging with content' },
-    { metric: 'Click-Through Rate', value: '0.9%', status: 'ok', insight: 'Near benchmark for entertainment brands' },
-    { metric: 'New Subscribers (attributed)', value: '1,240', status: 'bad', insight: 'Low conversion from clicks — landing page issue?' },
-    { metric: 'Cost Per Acquisition', value: '£28', status: 'bad', insight: 'Above £15 target — acquisition too expensive' },
-    { metric: 'Share Rate', value: '4.8%', status: 'good', insight: 'Very high shareability — content has viral potential' },
-  ],
-  Airbnb: [
-    { metric: 'Impressions', value: '1.8M', status: 'ok', insight: 'Moderate reach — consider increasing budget' },
-    { metric: 'Save Rate', value: '6.2%', status: 'good', insight: 'High saves = high purchase intent for travel' },
-    { metric: 'Profile Visits', value: '45,000', status: 'good', insight: 'Strong interest driving discovery' },
-    { metric: 'Booking Clicks', value: '2,100', status: 'ok', insight: 'Reasonable but below target' },
-    { metric: 'Cost Per Booking Click', value: '£4.20', status: 'ok', insight: 'Acceptable — aligns with travel benchmarks' },
-    { metric: 'Follower Growth', value: '+0.2%', status: 'bad', insight: 'Minimal community growth — content not building long-term audience' },
-  ],
-  Spotify: [
-    { metric: 'Impressions', value: '8.3M', status: 'good', insight: 'Excellent reach — strong distribution' },
-    { metric: 'Engagement Rate', value: '5.7%', status: 'good', insight: 'Outstanding — highly engaging content format' },
-    { metric: 'Comment Rate', value: '2.1%', status: 'good', insight: 'Users are in conversation — community building' },
-    { metric: 'Stream Opens (attributed)', value: '18,400', status: 'ok', insight: 'Good but short of 25k target' },
-    { metric: 'Premium Conversions', value: '320', status: 'bad', insight: 'Very low — not converting engagement to revenue' },
-    { metric: 'Share Rate', value: '7.4%', status: 'good', insight: 'Exceptional — users want to share the content' },
-  ],
-  Innocent: [
-    { metric: 'Impressions', value: '640,000', status: 'ok', insight: 'Limited reach — budget constraints visible' },
-    { metric: 'Engagement Rate', value: '4.1%', status: 'good', insight: 'Strong — humorous content driving interactions' },
-    { metric: 'Website Clicks', value: '3,200', status: 'ok', insight: 'Moderate — could improve with stronger CTA' },
-    { metric: 'Stockist Lookups', value: '890', status: 'bad', insight: 'Low purchase intent actions — funnel not working' },
-    { metric: 'UGC Posts Tagged', value: '142', status: 'good', insight: 'Strong community advocacy' },
-    { metric: 'Cost Per Engagement', value: '£0.08', status: 'good', insight: 'Excellent efficiency for FMCG brand' },
-  ],
-}
+export const BUDGET_KEYWORDS = ['roas', 'cpa', 'roi', 'conversion', 'retargeting', 'awareness', 'reach', 'content-first', 'amplify', 'organic', 'paid', 'community', 'retention', 'acquisition', 'funnel', 'tofu', 'bofu', '70/20/10', 'scale', 'test', 'measure', 'attribution', 'efficient', 'objective']
 
-export const FUNNEL_DATA: Record<Brand, { stage: string; users: number; dropoff: string }[]> = {
-  Nike: [
-    { stage: 'Ad Impression', users: 2400000, dropoff: '97% don\'t click' },
-    { stage: 'Click to Site', users: 72000, dropoff: '45% bounce immediately' },
-    { stage: 'Product View', users: 39600, dropoff: '78% don\'t add to cart' },
-    { stage: 'Add to Cart', users: 8712, dropoff: '65% abandon cart' },
-    { stage: 'Purchase', users: 3049, dropoff: '' },
-  ],
-  Netflix: [
-    { stage: 'Ad Impression', users: 5100000, dropoff: '98% don\'t click' },
-    { stage: 'Click to Site', users: 102000, dropoff: '55% bounce' },
-    { stage: 'Plan Page View', users: 45900, dropoff: '73% don\'t start trial' },
-    { stage: 'Trial Started', users: 12393, dropoff: '90% don\'t convert' },
-    { stage: 'Paid Subscriber', users: 1240, dropoff: '' },
-  ],
-  Airbnb: [
-    { stage: 'Ad Impression', users: 1800000, dropoff: '97.5% don\'t click' },
-    { stage: 'Click to Site', users: 45000, dropoff: '40% bounce' },
-    { stage: 'Property View', users: 27000, dropoff: '92% don\'t enquire' },
-    { stage: 'Booking Started', users: 2160, dropoff: '3% abandon' },
-    { stage: 'Booking Completed', users: 2095, dropoff: '' },
-  ],
-  Spotify: [
-    { stage: 'Ad Impression', users: 8300000, dropoff: '99% don\'t click' },
-    { stage: 'Click to App', users: 83000, dropoff: '78% don\'t open' },
-    { stage: 'App Opened', users: 18260, dropoff: '78% stay free' },
-    { stage: 'Premium Page View', users: 4015, dropoff: '92% don\'t convert' },
-    { stage: 'Premium Subscriber', users: 320, dropoff: '' },
-  ],
-  Innocent: [
-    { stage: 'Ad Impression', users: 640000, dropoff: '99.5% don\'t click' },
-    { stage: 'Click to Site', users: 3200, dropoff: '72% bounce' },
-    { stage: 'Stockist Page', users: 896, dropoff: '0.6% find store' },
-    { stage: 'Stockist Lookup', users: 890, dropoff: '' },
-    { stage: 'Estimated Purchase', users: 180, dropoff: '' },
-  ],
-}
+// ─── B5A3: SOCIAL COMMERCE STRATEGY ──────────────────────────
+export const SOCIAL_COMMERCE_PLATFORMS = [
+  {
+    id: 'instagram_shopping',
+    name: 'Instagram Shopping',
+    desc: 'Product tags on posts and stories, in-app checkout, shop tab',
+    strength: 'Best for aspirational product discovery with purchase intent',
+    audienceFit: 'high',
+    nikeFit: 'high',
+  },
+  {
+    id: 'tiktok_shop',
+    name: 'TikTok Shop',
+    desc: 'In-video product tags, affiliate creator programme, live shopping',
+    strength: 'Fastest growing — impulse purchases driven by content',
+    audienceFit: 'high',
+    nikeFit: 'medium',
+  },
+  {
+    id: 'live_commerce',
+    name: 'Live Shopping Events',
+    desc: 'Real-time product demos, Q&A, instant purchase during stream',
+    strength: 'Highest conversion rate — urgency + entertainment + commerce',
+    audienceFit: 'medium',
+    nikeFit: 'medium',
+  },
+  {
+    id: 'creator_commerce',
+    name: 'Creator Affiliate Commerce',
+    desc: 'Creators earn commission — zero-risk performance-based model',
+    strength: 'Scales UGC and advocacy while driving trackable revenue',
+    audienceFit: 'high',
+    nikeFit: 'high',
+  },
+  {
+    id: 'facebook_shops',
+    name: 'Facebook Shops',
+    desc: 'Product catalogue, in-app checkout, Messenger integration',
+    strength: 'Stronger for older demographics and retargeting',
+    audienceFit: 'low',
+    nikeFit: 'low',
+  },
+]
 
+export const COMMERCE_KEYWORDS = ['frictionless', 'in-app', 'checkout', 'discovery', 'purchase', 'conversion', 'tiktok shop', 'instagram shopping', 'live commerce', 'creator', 'affiliate', 'impulse', 'seamless', 'journey', 'reduce friction', 'social proof', 'ugc', 'authentic', 'shoppable', 'product tag']
+
+// ─── B6A1: CAMPAIGN DIAGNOSIS ────────────────────────────────
+export const CAMPAIGN_DATA = [
+  { metric: 'Impressions', value: '8.4M', status: 'good' as const, insight: 'Strong reach — campaign is being seen at scale' },
+  { metric: 'Engagement Rate', value: '0.7%', status: 'bad' as const, insight: 'Below 1% benchmark — content not resonating' },
+  { metric: 'Video Completion Rate', value: '68%', status: 'good' as const, insight: 'Above 50% benchmark — video content is compelling' },
+  { metric: 'Click-Through Rate', value: '0.4%', status: 'bad' as const, insight: 'Low intent — ads not driving action' },
+  { metric: 'Cost Per Click', value: '£2.10', status: 'ok' as const, insight: 'Acceptable but room to improve' },
+  { metric: 'ROAS', value: '1.6x', status: 'bad' as const, insight: 'Well below 3x target — underperforming commercially' },
+  { metric: 'Follower Growth', value: '+0.3%', status: 'bad' as const, insight: 'Campaign not converting viewers to community members' },
+  { metric: 'Story Views', value: '420K', status: 'good' as const, insight: 'Strong Story engagement — owned audience active' },
+]
+
+// ─── B6A2: FUNNEL ANALYSIS ────────────────────────────────────
+export const FUNNEL_DATA = [
+  { stage: 'Ad Impression', users: 8400000, dropoff: '99.1% don\'t click' },
+  { stage: 'Click to Nike.com', users: 75600, dropoff: '52% bounce immediately' },
+  { stage: 'Product Page View', users: 36288, dropoff: '81% don\'t add to cart' },
+  { stage: 'Add to Cart', users: 6895, dropoff: '68% abandon checkout' },
+  { stage: 'Purchase Completed', users: 2206, dropoff: '' },
+]
+
+export const FUNNEL_OPTIMISATION_ACTIONS = [
+  { id: 'improve_cta', label: 'Improve ad CTA to increase click-through rate' },
+  { id: 'landing_page', label: 'Redesign landing page to reduce bounce rate' },
+  { id: 'social_proof', label: 'Add reviews and UGC to product pages to build trust' },
+  { id: 'retargeting', label: 'Launch retargeting campaign to recover cart abandoners' },
+  { id: 'in_app', label: 'Enable Instagram/TikTok in-app checkout to reduce platform friction' },
+  { id: 'better_targeting', label: 'Improve audience targeting to attract higher-intent users' },
+  { id: 'creative_refresh', label: 'Refresh ad creative to improve relevance and engagement' },
+  { id: 'simplify_checkout', label: 'Simplify the checkout process — fewer steps to purchase' },
+]
+
+// ─── B6A3: MEASUREMENT DASHBOARD ────────────────────────────
 export const KPI_OPTIONS = [
-  { id: 'reach', label: 'Reach', stage: 'Awareness', desc: 'Total unique accounts who saw content' },
-  { id: 'impressions', label: 'Impressions', stage: 'Awareness', desc: 'Total times content was displayed' },
-  { id: 'share_of_voice', label: 'Share of Voice', stage: 'Awareness', desc: '% of category conversation owned' },
-  { id: 'brand_mentions', label: 'Brand Mentions', stage: 'Awareness', desc: 'Organic mentions across platforms' },
-  { id: 'engagement_rate', label: 'Engagement Rate', stage: 'Engagement', desc: 'Likes, comments, shares as % of reach' },
-  { id: 'saves', label: 'Saves', stage: 'Engagement', desc: 'Users bookmarking content for later' },
-  { id: 'comment_sentiment', label: 'Comment Sentiment', stage: 'Engagement', desc: 'Quality of community conversation' },
-  { id: 'share_rate', label: 'Share Rate', stage: 'Engagement', desc: 'Content shared as % of reach' },
+  { id: 'reach', label: 'Reach', stage: 'Awareness', desc: 'Unique accounts who saw content' },
+  { id: 'impressions', label: 'Impressions', stage: 'Awareness', desc: 'Total content display count' },
+  { id: 'share_of_voice', label: 'Share of Voice', stage: 'Awareness', desc: '% of sportswear category conversation' },
+  { id: 'brand_mentions', label: 'Brand Mentions', stage: 'Awareness', desc: 'Organic Nike mentions across platforms' },
+  { id: 'video_completion', label: 'Video Completion Rate', stage: 'Awareness', desc: '% of viewers watching to the end' },
+  { id: 'engagement_rate', label: 'Engagement Rate', stage: 'Engagement', desc: 'Interactions as % of reach' },
+  { id: 'saves', label: 'Save Rate', stage: 'Engagement', desc: 'Users bookmarking content — strongest intent signal' },
+  { id: 'comments', label: 'Comment Rate', stage: 'Engagement', desc: 'Quality of community conversation' },
+  { id: 'shares', label: 'Share Rate', stage: 'Engagement', desc: 'Content shared to networks' },
   { id: 'ctr', label: 'Click-Through Rate', stage: 'Conversion', desc: 'Clicks as % of impressions' },
   { id: 'conversion_rate', label: 'Conversion Rate', stage: 'Conversion', desc: 'Actions completed vs visitors' },
   { id: 'roas', label: 'ROAS', stage: 'Conversion', desc: 'Revenue per £1 of ad spend' },
   { id: 'cpa', label: 'Cost Per Acquisition', stage: 'Conversion', desc: 'Cost to acquire one customer' },
-  { id: 'ugc_volume', label: 'UGC Volume', stage: 'Advocacy', desc: 'User-generated content tagged with brand' },
-  { id: 'nps', label: 'Net Promoter Score', stage: 'Advocacy', desc: 'Likelihood to recommend' },
-  { id: 'follower_growth', label: 'Community Growth Rate', stage: 'Advocacy', desc: 'Monthly follower growth %' },
-  { id: 'referrals', label: 'Social Referrals', stage: 'Advocacy', desc: 'Traffic/sales from social sharing' },
+  { id: 'ugc_volume', label: 'UGC Volume', stage: 'Advocacy', desc: 'Community content tagged with Nike' },
+  { id: 'community_growth', label: 'Community Growth Rate', stage: 'Advocacy', desc: 'Monthly follower growth %' },
+  { id: 'nps', label: 'Net Promoter Score', stage: 'Advocacy', desc: 'Likelihood to recommend Nike' },
 ]
 
-export const AI_CONTENT_EXAMPLES: Record<Brand, { id: string; content: string; isAI: boolean; giveaway: string }[]> = {
-  Nike: [
-    { id: 'n1', content: '"You didn\'t wake up at 5am because it\'s easy. You woke up because you know what you\'re building." — @nike', isAI: true, giveaway: 'Grammatically perfect, lacks specific human experience, could apply to any athletic brand' },
-    { id: 'n2', content: '"My knees are rubbish. My lungs gave up after the second hill. The dog is faster than me. But I finished. That\'s enough." — caption from a real runner\'s post', isAI: false, giveaway: 'Specific, imperfect, self-deprecating — AI would not choose to sound this uncertain' },
-  ],
-  Netflix: [
-    { id: 'nf1', content: '"Studies show that people who watch Netflix together report 34% higher relationship satisfaction. We\'re basically couples therapy."', isAI: true, giveaway: 'The statistic sounds plausible but is invented — classic AI hallucination pattern combined with brand voice imitation' },
-    { id: 'nf2', content: '"ok who else rewatched the same scene 7 times bc they couldn\'t believe that actually happened"', isAI: false, giveaway: 'Lowercase, informal grammar, specific emotional reaction — authentic social voice' },
-  ],
-  Airbnb: [
-    { id: 'ab1', content: '"Discover the perfect balance of comfort and adventure with our curated selection of unique properties across 220 countries and territories."', isAI: true, giveaway: 'Corporate phrasing, exact stat, no emotional hook — sounds like marketing copy not social content' },
-    { id: 'ab2', content: '"Still thinking about the host who left homemade jam and a note that said \'help yourself, I made too much\'. That was three years ago."', isAI: false, giveaway: 'Hyper-specific memory, emotional residue, the kind of tiny detail AI doesn\'t invent' },
-  ],
-  Spotify: [
-    { id: 'sp1', content: '"Music has the unique ability to transport listeners to specific moments in time, triggering memories and emotions with remarkable precision."', isAI: true, giveaway: 'Academic register, no personality, no Spotify voice — reads like a Wikipedia introduction' },
-    { id: 'sp2', content: '"the song you skip every time but never delete says a lot about you actually"', isAI: false, giveaway: 'No capital letters, specifically relatable behaviour, creates instant emotional recognition' },
-  ],
-  Innocent: [
-    { id: 'in1', content: '"At Innocent, we\'re committed to creating delicious, nutritious drinks made from the finest natural ingredients while maintaining our dedication to environmental sustainability."', isAI: true, giveaway: 'Generic corporate sustainability language — nothing like Innocent\'s actual playful voice' },
-    { id: 'in2', content: '"This smoothie has 0% added sugar, 100% real fruit, and approximately 47% of the love we put into making it. The rest got left in the blender."', isAI: false, giveaway: 'Innocent\'s specific self-aware humour — the 47% joke is the kind of unexpected specificity that defines their voice' },
-  ],
-}
+// ─── B7A1: HUMAN vs AI ───────────────────────────────────────
+export const AI_CONTENT_EXAMPLES = [
+  {
+    id: 'ai_1',
+    content: '"At Nike, we are committed to empowering athletes of all abilities through innovative sportswear design, sustainable manufacturing practices, and a dedication to excellence that drives performance at every level."',
+    isAI: true,
+    giveaway: 'Corporate phrasing, could apply to any brand, no specific voice or human imperfection — classic AI output from a generic prompt.',
+  },
+  {
+    id: 'human_1',
+    content: '"My knees are wrecked. My playlist died at mile 4. I tripped over a dog. Still ran the whole thing. Turns out \'just do it\' means something different to everyone."',
+    isAI: false,
+    giveaway: 'Specific failures, self-deprecating, emotionally honest — the kind of imperfection AI avoids. The callback to Just Do It feels earned not scripted.',
+  },
+  {
+    id: 'ai_2',
+    content: '"Research demonstrates that consistent athletic training with proper footwear increases performance outcomes by an average of 23% across diverse demographic cohorts."',
+    isAI: true,
+    giveaway: 'The statistic sounds plausible but is invented — a classic AI hallucination. Academic register, no personality, no Nike voice whatsoever.',
+  },
+  {
+    id: 'human_2',
+    content: '"ok who else got into running during lockdown, quit for two years, started again last month and now somehow registered for a half marathon. asking for a friend"',
+    isAI: false,
+    giveaway: 'Lowercase, self-aware, uses "asking for a friend" — culturally current social voice. Captures real Nike community behaviour. No AI would write this casually.',
+  },
+]
 
+// ─── B7A2: FUTURE TRENDS ─────────────────────────────────────
 export const FUTURE_TRENDS = [
-  { id: 'gen_ai', label: 'Generative AI', desc: 'AI creates content, images, and campaigns at scale' },
-  { id: 'social_search', label: 'Social Search', desc: 'TikTok and Instagram replacing Google for discovery' },
-  { id: 'automation', label: 'Full Campaign Automation', desc: 'AI manages bidding, targeting, creative optimisation' },
-  { id: 'synthetic_influencers', label: 'Synthetic Influencers', desc: 'AI-generated virtual creators with massive followings' },
-  { id: 'predictive', label: 'Predictive Analytics', desc: 'AI predicts what content will perform before posting' },
-  { id: 'ar_social', label: 'AR Social Experiences', desc: 'Augmented reality becomes standard in social content' },
-  { id: 'social_commerce', label: 'Full Social Commerce', desc: 'Complete purchase journey within social platforms' },
+  { id: 'gen_ai', label: 'Generative AI Content at Scale', desc: 'AI creates content, adapts messaging, personalises at individual level' },
+  { id: 'social_search', label: 'Social Search Replacing Google', desc: 'TikTok and Instagram become primary discovery engines for 18–24s' },
+  { id: 'synthetic_influencers', label: 'Synthetic / Virtual Influencers', desc: 'AI-generated creators with millions of followers — brand safe, always on' },
+  { id: 'predictive', label: 'Predictive Analytics', desc: 'AI predicts content performance and trend peaks before they happen' },
+  { id: 'social_commerce_full', label: 'Full In-App Social Commerce', desc: 'Complete purchase journey within TikTok/Instagram — no external website' },
+  { id: 'ar_experiences', label: 'AR Try-On & Social Experiences', desc: 'Try Nike products virtually before buying — integrated into social feeds' },
+  { id: 'creator_economy', label: 'Creator Economy Maturation', desc: 'Creators become primary marketing channel — surpassing traditional advertising' },
 ]
 
-export const BRAND_CONTEXT: Record<Brand, { industry: string; mainPlatforms: string[]; audience: string; tone: string; challenge: string }> = {
-  Nike: { industry: 'Sports & Apparel', mainPlatforms: ['Instagram','TikTok','YouTube','Twitter/X'], audience: '16–35 athletes and fitness enthusiasts', tone: 'Inspirational, bold, motivating', challenge: 'Maintaining authenticity while scaling globally' },
-  Netflix: { industry: 'Streaming Entertainment', mainPlatforms: ['Instagram','TikTok','Twitter/X','Facebook'], audience: '18–45 entertainment consumers', tone: 'Witty, culturally aware, conversational', challenge: 'Content volume competing for social attention' },
-  Airbnb: { industry: 'Travel & Hospitality', mainPlatforms: ['Instagram','Pinterest','TikTok','Facebook'], audience: '25–45 experience-driven travellers', tone: 'Aspirational, warm, community-driven', challenge: 'Building trust through social content' },
-  Spotify: { industry: 'Music & Podcast Streaming', mainPlatforms: ['Instagram','TikTok','Twitter/X','YouTube'], audience: '16–34 music and podcast listeners', tone: 'Creative, data-driven, culturally relevant', challenge: 'Standing out in a saturated streaming market' },
-  Innocent: { industry: 'FMCG / Healthy Drinks', mainPlatforms: ['Instagram','Twitter/X','Facebook','TikTok'], audience: '25–40 health-conscious consumers', tone: 'Playful, honest, sustainability-focused', challenge: 'Competing with larger FMCG budgets through wit' },
-}
+export const TRENDS_KEYWORDS = ['nike', 'sport', 'female', 'audience', 'discovery', 'search', 'tiktok', 'instagram', 'ai', 'artificial intelligence', 'commerce', 'purchase', 'authentic', 'creator', 'influencer', 'community', 'personalisation', 'data', 'algorithm', 'trend', 'generation', 'gen z', 'impact', 'revenue', 'strategy', 'opportunity', 'threat', 'future', 'platform', 'social']
 
-export function calcCompletionPts(fields: string[], minLen = 10): number {
-  const filled = fields.filter(f => f && f.trim().length >= minLen).length
-  const ratio = filled / fields.length
-  if (ratio >= 1) return 2
-  if (ratio >= 0.5) return 1
+// ─── B7A3: AI TOOLS AUDIT ────────────────────────────────────
+export const AI_TOOL_CATEGORIES = [
+  {
+    id: 'content_creation',
+    category: 'Content Creation',
+    tools: [
+      { id: 'chatgpt', name: 'ChatGPT / Claude', purpose: 'Copy, captions, campaign concepts, briefs' },
+      { id: 'midjourney', name: 'Midjourney / DALL-E', purpose: 'Image generation, visual concepts, mood boards' },
+      { id: 'runway', name: 'Runway / Sora', purpose: 'AI video generation and editing' },
+      { id: 'elevenlabs', name: 'ElevenLabs', purpose: 'Voice cloning, multilingual voiceovers' },
+    ],
+  },
+  {
+    id: 'analytics',
+    category: 'Analytics & Listening',
+    tools: [
+      { id: 'brandwatch', name: 'Brandwatch', purpose: 'AI social listening, sentiment analysis, crisis detection' },
+      { id: 'sprinklr', name: 'Sprinklr', purpose: 'Unified social management with AI analytics' },
+      { id: 'ga4', name: 'GA4 + AI Insights', purpose: 'Predictive audience modelling, conversion forecasting' },
+    ],
+  },
+  {
+    id: 'advertising',
+    category: 'Advertising & Optimisation',
+    tools: [
+      { id: 'meta_advantage', name: 'Meta Advantage+', purpose: 'Automated AI campaign optimisation and targeting' },
+      { id: 'smartly', name: 'Smartly.io', purpose: 'AI creative generation and paid social automation' },
+      { id: 'persado', name: 'Persado', purpose: 'AI copywriting optimised for conversion' },
+    ],
+  },
+  {
+    id: 'personalisation',
+    category: 'Personalisation & CRM',
+    tools: [
+      { id: 'dynamic_yield', name: 'Dynamic Yield', purpose: 'AI personalisation across web, app and email' },
+      { id: 'klaviyo', name: 'Klaviyo AI', purpose: 'Predictive email and SMS personalisation' },
+    ],
+  },
+]
+
+export const AI_TOOLS_KEYWORDS = ['efficiency', 'scale', 'automate', 'personalise', 'listen', 'sentiment', 'analytics', 'content', 'creative', 'optimise', 'target', 'audience', 'data', 'insight', 'human', 'oversight', 'brand', 'voice', 'authentic', 'risk', 'governance', 'strategy', 'workflow', 'time', 'cost', 'quality', 'nike', 'social', 'campaign']
+
+// ─── SCORING UTILITIES ────────────────────────────────────────
+export function calcQualityScore(text: string, keywords: string[]): number {
+  if (!text || text.trim().length < 15) return 0
+  if (text.toLowerCase().includes('lorem') || text.toLowerCase().includes('ipsum')) return 0
+  const lower = text.toLowerCase()
+  const hits = keywords.filter(k => lower.includes(k.toLowerCase())).length
+  const lengthBonus = text.trim().length >= 100 ? 1 : 0
+  if (hits >= 4 + lengthBonus) return 5
+  if (hits >= 3) return 4
+  if (hits >= 2) return 3
+  if (hits >= 1) return 2
+  if (text.trim().length >= 40) return 1
   return 0
-}
-
-export function scoreDecisions(selected: string[], correct: string[], partial = false): number {
-  const hits = selected.filter(s => correct.includes(s)).length
-  const misses = selected.filter(s => !correct.includes(s)).length
-  if (partial) return Math.max(0, hits - misses)
-  return hits === correct.length && misses === 0 ? correct.length : Math.max(0, hits - misses)
 }
