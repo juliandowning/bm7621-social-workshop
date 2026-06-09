@@ -1,68 +1,65 @@
 import { useWorkspaceStore } from '../../store/workspace'
-import { BRAND_CONTEXT, BLOCK_STRUCTURE, ACTIVITY_ORDER } from '../../data/workshop'
+import { BLOCK_STRUCTURE, ACTIVITY_ORDER, NIKE_BRIEF } from '../../data/workshop'
 import { selectTotalScore, selectCompletedCount } from '../../store/workspace'
 
 interface MissionPanelProps { onStart?: () => void }
 
 export function MissionPanel({ onStart }: MissionPanelProps) {
   const { team, scores } = useWorkspaceStore()
-  const brand = team?.brand || 'Nike'
-  const context = BRAND_CONTEXT[brand]
   const total = selectTotalScore(scores)
   const completed = selectCompletedCount(scores)
 
   return (
     <div>
       {/* Hero */}
-      <div className="bg-gradient-to-br from-brand-600 to-brand-800 rounded-2xl p-8 text-white mb-6">
-        <div className="text-[10px] font-bold tracking-widest uppercase text-brand-200 mb-2">BM7621 · Social Media Workshop</div>
-        <h1 className="text-3xl font-bold mb-2">Welcome, {team?.name || 'Team'}</h1>
-        <p className="text-brand-100 text-sm mb-4">
-          You are representing <strong className="text-white">{brand}</strong> today — a leading brand in {context.industry}.
-        </p>
+      <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-8 text-white mb-6">
+        <div className="text-[10px] font-bold tracking-widest uppercase text-slate-400 mb-2">BM7621 · Social Media Workshop</div>
+        <h1 className="text-3xl font-bold mb-1">{team?.name || 'Your Agency'}</h1>
+        <p className="text-slate-300 text-sm mb-1">Pitching for: <strong className="text-white">Nike</strong> — {NIKE_BRIEF.tagline}</p>
+        <p className="text-slate-400 text-xs mb-5">CIM Level 4 · Digital Marketing</p>
         <div className="grid grid-cols-3 gap-3">
           <div className="bg-white/10 rounded-xl p-3 text-center">
             <div className="text-2xl font-bold">{total}</div>
-            <div className="text-[10px] text-brand-200 uppercase tracking-wider">Points</div>
+            <div className="text-[10px] text-slate-300 uppercase tracking-wider">Points</div>
           </div>
           <div className="bg-white/10 rounded-xl p-3 text-center">
             <div className="text-2xl font-bold">{completed}</div>
-            <div className="text-[10px] text-brand-200 uppercase tracking-wider">Completed</div>
+            <div className="text-[10px] text-slate-300 uppercase tracking-wider">Done</div>
           </div>
           <div className="bg-white/10 rounded-xl p-3 text-center">
-            <div className="text-2xl font-bold">{ACTIVITY_ORDER.length}</div>
-            <div className="text-[10px] text-brand-200 uppercase tracking-wider">Activities</div>
+            <div className="text-2xl font-bold">{ACTIVITY_ORDER.length - 1}</div>
+            <div className="text-[10px] text-slate-300 uppercase tracking-wider">Activities</div>
           </div>
         </div>
       </div>
 
-      {/* Brand context */}
+      {/* Nike brief */}
       <div className="bg-white border border-slate-200 rounded-2xl p-6 mb-6 shadow-sm">
-        <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-3">Your Brand Brief</div>
-        <div className="grid grid-cols-1 gap-3">
+        <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-3">The Brief</div>
+        <div className="space-y-3">
           <div>
-            <div className="text-xs font-semibold text-slate-500 mb-0.5">Industry</div>
-            <div className="text-sm text-slate-800">{context.industry}</div>
+            <div className="text-xs font-semibold text-slate-500 mb-0.5">Situation</div>
+            <div className="text-sm text-slate-800">{NIKE_BRIEF.situation}</div>
           </div>
           <div>
-            <div className="text-xs font-semibold text-slate-500 mb-0.5">Primary Platforms</div>
-            <div className="flex flex-wrap gap-1.5">
-              {context.mainPlatforms.map(p => (
-                <span key={p} className="text-[10px] font-bold px-2 py-0.5 rounded bg-brand-100 text-brand-700">{p}</span>
+            <div className="text-xs font-semibold text-slate-500 mb-0.5">Your Challenge</div>
+            <div className="text-sm text-slate-800 font-semibold">{NIKE_BRIEF.challenge}</div>
+          </div>
+          <div>
+            <div className="text-xs font-semibold text-slate-500 mb-0.5">Primary Audience</div>
+            <div className="text-sm text-slate-800">{NIKE_BRIEF.audience.primary}</div>
+          </div>
+          <div>
+            <div className="text-xs font-semibold text-slate-500 mb-0.5">Audience Insight</div>
+            <div className="text-sm text-slate-600 italic">{NIKE_BRIEF.audience.insight}</div>
+          </div>
+          <div>
+            <div className="text-xs font-semibold text-slate-500 mb-0.5">Current Platforms</div>
+            <div className="flex flex-wrap gap-1.5 mt-1">
+              {NIKE_BRIEF.currentPlatforms.map(p => (
+                <span key={p} className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-600">{p}</span>
               ))}
             </div>
-          </div>
-          <div>
-            <div className="text-xs font-semibold text-slate-500 mb-0.5">Target Audience</div>
-            <div className="text-sm text-slate-800">{context.audience}</div>
-          </div>
-          <div>
-            <div className="text-xs font-semibold text-slate-500 mb-0.5">Brand Tone</div>
-            <div className="text-sm text-slate-800">{context.tone}</div>
-          </div>
-          <div>
-            <div className="text-xs font-semibold text-slate-500 mb-0.5">Key Challenge</div>
-            <div className="text-sm text-slate-800">{context.challenge}</div>
           </div>
         </div>
       </div>
@@ -81,11 +78,9 @@ export function MissionPanel({ onStart }: MissionPanelProps) {
                 </div>
                 <div className="flex-1">
                   <div className="text-sm font-semibold text-slate-800">{block.label}</div>
-                  <div className="text-xs text-slate-400">{block.description}</div>
+                  <div className="text-xs text-slate-400">{block.deliverable}</div>
                 </div>
-                <div className="text-xs font-semibold text-slate-400">
-                  {blockCompleted}/{blockTotal}
-                </div>
+                <div className="text-xs font-semibold text-slate-400">{blockCompleted}/{blockTotal}</div>
               </div>
             )
           })}

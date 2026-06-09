@@ -1,5 +1,5 @@
 import { useWorkspaceStore, selectTotalScore, selectCompletedCount } from '../../store/workspace'
-import { BLOCK_STRUCTURE, ACTIVITY_LABELS, ACTIVITY_DISPLAY_NUM } from '../../data/workshop'
+import { BLOCK_STRUCTURE, ACTIVITY_LABELS } from '../../data/workshop'
 import type { ActivityKey } from '../../types'
 
 interface SidebarProps {
@@ -98,7 +98,7 @@ export function Sidebar({ currentPanel, onNavigate, onClose }: SidebarProps) {
                     {done ? (locked ? '🔒' : '✓') : '○'}
                   </span>
                   <span className="text-xs truncate">
-                    A{ACTIVITY_DISPLAY_NUM[actKey]} — {ACTIVITY_LABELS[actKey]}
+                    {ACTIVITY_LABELS[actKey]}
                   </span>
                 </button>
               )
@@ -110,7 +110,7 @@ export function Sidebar({ currentPanel, onNavigate, onClose }: SidebarProps) {
         <button onClick={() => navigate('final')}
           className={`w-full text-left px-3 py-2 rounded-lg flex items-center gap-2 transition-colors mb-1 ${currentPanel === 'final' ? 'bg-violet-600 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
           <span className="text-sm">🏆</span>
-          <span className="text-xs font-semibold">Social Masters Challenge</span>
+          <span className="text-xs font-semibold">Agency Pitch</span>
         </button>
 
         {/* Tools */}
