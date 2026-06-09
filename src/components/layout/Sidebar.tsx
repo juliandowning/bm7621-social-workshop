@@ -36,7 +36,7 @@ export function Sidebar({ currentPanel, onNavigate, onClose }: SidebarProps) {
   }
 
   return (
-    <aside className="w-64 h-screen bg-slate-900 flex flex-col fixed top-0 left-0 z-50">
+    <aside className="w-64 h-full bg-slate-900 flex flex-col overflow-hidden">
       {/* Fixed header — never scrolls, close button always accessible */}
       <div className="flex-shrink-0 border-b border-white/10">
         <div className="px-5 py-4 flex items-start justify-between gap-2">
