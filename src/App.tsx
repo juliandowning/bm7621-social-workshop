@@ -82,25 +82,37 @@ function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
         <BroadcastToast message={broadcastMessage.text} type={broadcastMessage.type} onDismiss={() => setBroadcast(null)} />
       )}
 
-      {/* Mobile sidebar overlay */}
+      {/* Mobile nav overlay — completely standalone, no Sidebar component */}
       {sidebarOpen && (
-        <div className="md:hidden fixed inset-0 z-50 flex">
-          {/* Sidebar panel */}
-          <div className="w-72 h-full bg-slate-900 flex flex-col overflow-hidden">
-            {/* Close bar — always visible, first thing at top */}
+        <div style={{position:'fixed',inset:0,zIndex:9999,display:'flex'}} className="md:hidden">
+          <div style={{width:'280px',height:'100%',background:'#0f172a',display:'flex',flexDirection:'column',overflowY:'auto'}}>
+            {/* Close button — very first element */}
             <button
-              className="flex items-center gap-3 px-4 py-4 bg-slate-800 text-white w-full text-left active:bg-slate-700"
+              style={{background:'#1e293b',color:'white',padding:'16px',fontSize:'18px',fontWeight:'bold',textAlign:'left',border:'none',cursor:'pointer',flexShrink:0}}
               onClick={() => setSidebarOpen(false)}
-            >
-              <span className="text-2xl">✕</span>
-              <span className="font-bold text-sm">Close Menu</span>
-            </button>
-            <div className="flex-1 overflow-y-auto">
-              <Sidebar currentPanel={panel} onNavigate={navigate} onClose={() => setSidebarOpen(false)} />
-            </div>
+            >✕ &nbsp;Close Menu</button>
+            {/* Nav links */}
+            {[
+              { id: 'mission', label: '📋 Mission Brief' },
+              { id: 'block1', label: 'Block 1 — Foundations' },
+              { id: 'block2', label: 'Block 2 — Behaviour & Ethics' },
+              { id: 'block3', label: 'Block 3 — Platforms' },
+              { id: 'block4', label: 'Block 4 — Content & Influencer' },
+              { id: 'block5', label: 'Block 5 — Paid Social' },
+              { id: 'block6', label: 'Block 6 — Analytics' },
+              { id: 'block7', label: 'Block 7 — AI & Future' },
+              { id: 'final', label: '🏆 Agency Pitch' },
+              { id: 'leaderboard', label: '📊 Leaderboard' },
+              { id: 'exports', label: '↓ Export Centre' },
+            ].map(item => (
+              <button key={item.id}
+                style={{color: panel === item.id ? '#818cf8' : '#94a3b8', padding:'12px 16px',textAlign:'left',border:'none',background:'transparent',fontSize:'14px',cursor:'pointer',borderBottom:'1px solid rgba(255,255,255,0.05)'}}
+                onClick={() => { navigate(item.id); setSidebarOpen(false) }}
+              >{item.label}</button>
+            ))}
           </div>
-          {/* Tap outside to close */}
-          <div className="flex-1 bg-black/60" onClick={() => setSidebarOpen(false)} />
+          {/* Tap outside */}
+          <div style={{flex:1,background:'rgba(0,0,0,0.6)'}} onClick={() => setSidebarOpen(false)} />
         </div>
       )}
 
