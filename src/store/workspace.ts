@@ -5,7 +5,7 @@ import { upsertWorkspaceData } from '../lib/supabase'
 
 interface WorkspaceStore extends WorkspaceState {
   setTeam: (team: Team, isViewer?: boolean) => void
-  updateScore: (key: ActivityKey, points: number, max?: number, completionPts?: number, qualityPts?: number) => void
+  updateScore: (key: ActivityKey, points: number, max?: number) => void
   lockActivity: (key: ActivityKey) => void
   unlockActivity: (key: ActivityKey) => void
   updateResponse: (patch: Partial<ResponseMap>) => void
@@ -17,13 +17,8 @@ interface WorkspaceStore extends WorkspaceState {
 let syncTimeout: ReturnType<typeof setTimeout> | null = null
 
 const initialState: WorkspaceState = {
-  team: null,
-  scores: {},
-  responses: {},
-  syncStatus: 'idle',
-  lastSaved: null,
-  isViewer: false,
-  broadcastMessage: null,
+  team: null, scores: {}, responses: {},
+  syncStatus: 'idle', lastSaved: null, isViewer: false, broadcastMessage: null,
 }
 
 export const useWorkspaceStore = create<WorkspaceStore>()(
@@ -33,14 +28,13 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
 
       setTeam: (team, isViewer = false) => set({ team, isViewer }),
 
-      updateScore: (key, points, max = 5, completionPts = 0, qualityPts = 0) => {
+      updateScore: (key, points, max = 5) => {
         if (get().isViewer) return
         set(state => ({
           scores: {
             ...state.scores,
             [key]: {
-              key, points, completionPts, qualityPts, max,
-              completed: points > 0,
+              key, points, max, completed: points > 0,
               locked: state.scores[key]?.locked || false,
               timestamp: new Date().toISOString(),
             },
@@ -57,7 +51,7 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
             ...state.scores,
             [key]: state.scores[key]
               ? { ...state.scores[key]!, locked: true }
-              : { key, points: 0, completionPts: 0, qualityPts: 0, max: 5, completed: false, locked: true },
+              : { key, points: 0, max: 5, completed: false, locked: true },
           },
         }))
         scheduledSync(get)
@@ -69,7 +63,7 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
             ...state.scores,
             [key]: state.scores[key]
               ? { ...state.scores[key]!, locked: false }
-              : { key, points: 0, completionPts: 0, qualityPts: 0, max: 5, completed: false, locked: false },
+              : { key, points: 0, max: 5, completed: false, locked: false },
           },
         }))
         scheduledSync(get)
@@ -95,24 +89,13 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
             scores: state.scores as Record<string, unknown>,
             responses: state.responses as Record<string, unknown>,
           })
-          set({
-            syncStatus: ok ? 'saved' : 'error',
-            lastSaved: ok ? new Date().toISOString() : get().lastSaved,
-          })
-        } catch {
-          set({ syncStatus: 'error' })
-        }
+          set({ syncStatus: ok ? 'saved' : 'error', lastSaved: ok ? new Date().toISOString() : get().lastSaved })
+        } catch { set({ syncStatus: 'error' }) }
       },
     }),
     {
       name: 'bm7621-social-workspace',
-      partialize: (state) => ({
-        team: state.team,
-        scores: state.scores,
-        responses: state.responses,
-        lastSaved: state.lastSaved,
-        isViewer: state.isViewer,
-      }),
+      partialize: (state) => ({ team: state.team, scores: state.scores, responses: state.responses, lastSaved: state.lastSaved, isViewer: state.isViewer }),
     }
   )
 )
@@ -131,7 +114,7 @@ export function selectCompletedCount(scores: ScoreMap): number {
 }
 
 export function selectAvgQuality(scores: ScoreMap): number {
-  const withQ = Object.values(scores).filter(s => s?.completed && (s.qualityPts || 0) > 0)
-  if (!withQ.length) return 0
-  return Math.round(withQ.reduce((sum, s) => sum + (s?.qualityPts || 0), 0) / withQ.length * 10) / 10
+  const done = Object.values(scores).filter(s => s?.completed && s.points > 0)
+  if (!done.length) return 0
+  return Math.round(done.reduce((sum, s) => sum + (s?.points || 0), 0) / done.length * 10) / 10
 }
