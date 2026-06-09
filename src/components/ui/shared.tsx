@@ -20,9 +20,10 @@ interface ActivityCardProps {
   points: number
   max?: number
   locked?: boolean
+  isPitch?: boolean
   children: React.ReactNode
 }
-export function ActivityCard({ number, title, subtitle, points, max = 5, locked, children }: ActivityCardProps) {
+export function ActivityCard({ number, title, subtitle, points, max = 5, locked, isPitch, children }: ActivityCardProps) {
   return (
     <div className="bg-white border border-slate-200 rounded-2xl p-5 mb-5 shadow-sm">
       <div className="flex items-start justify-between gap-4 mb-4">
@@ -33,6 +34,7 @@ export function ActivityCard({ number, title, subtitle, points, max = 5, locked,
           <div>
             <div className="font-bold text-slate-900 text-sm">{title}</div>
             {subtitle && <div className="text-xs text-slate-500 mt-0.5">{subtitle}</div>}
+            {isPitch && <div className="text-[10px] font-bold text-violet-600 mt-1">📊 Feeds Agency Pitch</div>}
           </div>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
