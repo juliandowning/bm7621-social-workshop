@@ -9,7 +9,7 @@ interface SetupScreenProps {
   onFacilitator: () => void
 }
 
-type JoinStep = 'code' | 'returning_or_new' | 'first_setup'
+type JoinStep = 'code' | 'returning_or_new' | 'choose_role' | 'first_setup'
 
 export function SetupScreen({ onComplete, onFacilitator }: SetupScreenProps) {
   const { setTeam, updateScore, updateResponse } = useWorkspaceStore()
@@ -93,30 +93,45 @@ export function SetupScreen({ onComplete, onFacilitator }: SetupScreenProps) {
     const existing = selectedTeam.members?.find(m => m.name.toLowerCase() === name.toLowerCase())
 
     if (existing) {
-      // Returning member — restore session with original role
+      // Returning member — restore with original role
       setTeam({ ...selectedTeam }, existing.role === 'viewer')
       restoreWorkspace(existingWorkspace)
       onComplete(getLastBlock(existingWorkspace))
     } else {
-      // New name — join as Team Member immediately
-      const newMember: TeamMember = { name, order: (selectedTeam.members?.length || 0) + 1, role: 'member' }
-      const updatedMembers = [...(selectedTeam.members || []), newMember]
-      const updatedTeam: Team = { ...selectedTeam, members: updatedMembers }
-      setTeam(updatedTeam, false)
-      if (!selectedTeam.id.startsWith('demo-')) {
-        const saved = await updateTeamMembers(selectedTeam.id, updatedMembers)
-        if (!saved) console.error('Failed to save new member to Supabase')
-      }
-      onComplete(1)
+      // New name — go to role selection step
+      setStep('choose_role')
     }
   }
 
-  const handleViewer = async () => {
-    if (!selectedTeam) return
-    setTeam(selectedTeam, true)
+  const handleJoinAs = async (asViewer: boolean) => {
+    if (!selectedTeam || !memberName.trim()) return
+    const name = memberName.trim()
+    const role: TeamMember['role'] = asViewer ? 'viewer' : 'member'
+    const newMember: TeamMember = { name, order: (selectedTeam.members?.length || 0) + 1, role }
+    const updatedMembers = [...(selectedTeam.members || []), newMember]
+    const updatedTeam: Team = { ...selectedTeam, members: updatedMembers }
+    setTeam(updatedTeam, asViewer)
+    if (!selectedTeam.id.startsWith('demo-')) {
+      const saved = await updateTeamMembers(selectedTeam.id, updatedMembers)
+      if (!saved) console.error('Failed to save member to Supabase')
+    }
+    onComplete(asViewer ? getLastBlock(existingWorkspace) : 1)
+  }
+
+  const handleJoinAsViewer = async () => {
+    if (!selectedTeam || !memberName.trim()) return
+    const name = memberName.trim()
+    const newMember: TeamMember = { name, order: (selectedTeam.members?.length || 0) + 1, role: 'viewer' }
+    const updatedMembers = [...(selectedTeam.members || []), newMember]
+    const updatedTeam: Team = { ...selectedTeam, members: updatedMembers }
+    setTeam(updatedTeam, true)
     restoreWorkspace(existingWorkspace)
+    if (!selectedTeam.id.startsWith('demo-')) {
+      await updateTeamMembers(selectedTeam.id, updatedMembers)
+    }
     onComplete(getLastBlock(existingWorkspace))
   }
+
 
   const handleFirstSetup = async () => {
     if (!selectedTeam || !agencyName.trim() || !memberName.trim()) return
@@ -160,44 +175,47 @@ export function SetupScreen({ onComplete, onFacilitator }: SetupScreenProps) {
 
           {step === 'returning_or_new' && selectedTeam && (
             <div className="p-8">
-              <div className="bg-slate-900 rounded-xl p-4 text-center mb-6">
+              <div className="bg-slate-900 rounded-xl p-4 text-center mb-5">
                 <div className="text-[10px] font-bold tracking-widest uppercase text-slate-400 mb-1">Nike Account Pitch</div>
                 <div className="text-white font-bold text-lg">{selectedTeam.name}</div>
               </div>
 
-              <div className="mb-5">
-                <label className="block text-sm font-bold text-slate-700 mb-1.5">Your Name</label>
+              {/* Returning member box */}
+              <div className="border-2 border-slate-200 rounded-xl p-4 mb-3">
+                <div className="text-sm font-bold text-slate-800 mb-0.5">↩ Already registered?</div>
+                <p className="text-xs text-slate-500 mb-3">Enter your name exactly as you registered to restore your session and scores.</p>
                 <input type="text" autoFocus
-                  className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-brand-400"
-                  placeholder="Enter your name" value={memberName}
-                  onChange={e => setMemberName(e.target.value)}
+                  className="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-brand-400 mb-2"
+                  placeholder="Your registered name" value={memberName}
+                  onChange={e => { setMemberName(e.target.value); setError('') }}
                   onKeyDown={e => e.key === 'Enter' && handleReturning()} />
-                <p className="text-xs text-slate-400 mt-1.5">If you've been here before, entering your name restores your session. If you're new to this team, you'll join as a Team Member.</p>
+                {error && <div className="text-red-600 text-xs mb-2">{error}</div>}
+                <button className="w-full bg-brand-600 text-white font-bold py-2.5 rounded-lg hover:bg-brand-700 transition-colors disabled:opacity-50 text-sm"
+                  onClick={handleReturning} disabled={!memberName.trim()}>
+                  Restore My Session →
+                </button>
               </div>
 
-              {error && <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3 mb-3">{error}</div>}
-
-              <button className="w-full bg-brand-600 text-white font-bold py-3 rounded-xl hover:bg-brand-700 transition-colors disabled:opacity-50 mb-3"
-                onClick={handleReturning} disabled={!memberName.trim()}>
-                Enter Workshop →
-              </button>
-
-              <div className="relative flex items-center gap-3 mb-3">
-                <div className="flex-1 h-px bg-slate-200" />
-                <span className="text-xs text-slate-400 flex-shrink-0">or</span>
-                <div className="flex-1 h-px bg-slate-200" />
+              {/* New member — joins as viewer */}
+              <div className="border-2 border-slate-200 rounded-xl p-4 mb-3">
+                <div className="text-sm font-bold text-slate-800 mb-0.5">➕ New to this team?</div>
+                <p className="text-xs text-slate-500 mb-3">Enter your name to join as a Viewer — you can follow the workshop but only the Team Captain can submit answers.</p>
+                <input type="text"
+                  className="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-brand-400 mb-2"
+                  placeholder="Your name" value={memberName}
+                  onChange={e => { setMemberName(e.target.value); setError('') }} />
+                <button className="w-full bg-slate-700 text-white font-bold py-2.5 rounded-lg hover:bg-slate-600 transition-colors disabled:opacity-50 text-sm"
+                  onClick={handleJoinAsViewer} disabled={!memberName.trim()}>
+                  Join as Viewer →
+                </button>
               </div>
 
-              <button className="w-full py-2.5 border-2 border-slate-200 rounded-xl text-slate-600 text-sm font-medium hover:bg-slate-50"
-                onClick={handleViewer}>
-                👁 Join as Viewer (read-only)
-              </button>
-              <button className="w-full mt-2 text-xs text-slate-400 hover:text-slate-600 py-1"
+              <button className="w-full text-xs text-slate-400 hover:text-slate-600 py-1"
                 onClick={() => { setStep('code'); setError('') }}>← Different code</button>
             </div>
           )}
 
-          {/* Step 2c: First person — full setup */}
+                    {/* Step 2c: First person — full setup */}
           {step === 'first_setup' && selectedTeam && (
             <div className="p-8">
               <div className="bg-slate-900 rounded-xl p-4 text-center mb-6">
