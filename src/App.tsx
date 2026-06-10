@@ -65,9 +65,9 @@ function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
       .select('scores, responses')
       .eq('team_id', team.id)
       .maybeSingle()
-    if (data) {
+    if (data?.scores && Object.keys(data.scores).length > 0) {
       syncFromServer(
-        (data.scores || {}) as import('./types').ScoreMap,
+        data.scores as import('./types').ScoreMap,
         (data.responses || {}) as import('./types').ResponseMap
       )
     }
