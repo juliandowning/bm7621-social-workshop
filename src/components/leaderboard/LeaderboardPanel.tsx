@@ -24,7 +24,7 @@ export function LeaderboardPanel() {
       if (code === team?.code) {
         return { code, name: team?.name || code, score: myScore, completed: myCompleted, completionPct: Math.round(myCompleted / TOTAL_ACTS * 100), avgQuality: myQuality, isMine: true }
       }
-      const row = (data || []).find((r: unknown) => (r as { code: string }).code === code) as { name?: string; code: string; workspace?: { scores?: Record<string, unknown> } } | undefined
+      const row = (data || []).find((r: unknown) => (r as { code: string }).code === code) as { name?: string; code: string; workspace?: { scores?: Record<string, unknown>; responses?: Record<string, unknown> } } | undefined
       if (!row) return { code, name: code, score: 0, completed: 0, completionPct: 0, avgQuality: 0, isMine: false }
       const sc = (row.workspace?.scores || {}) as Record<string, { points?: number; completed?: boolean }>
       const score = Object.values(sc).reduce((s, v) => s + (v?.points || 0), 0)
