@@ -6,10 +6,36 @@ function cn(...classes: (string | boolean | undefined)[]) {
 }
 
 // ─── CONFIRM SUBMIT ──────────────────────────────────────────
+// Custom confirm modal - avoids browser URL in title
+let _confirmCallback: (() => void) | null = null
+let _setConfirmVisible: ((v: boolean) => void) | null = null
+
+export function ConfirmModal() {
+  const [visible, setVisible] = React.useState(false)
+  React.useEffect(() => {
+    _setConfirmVisible = setVisible
+    return () => { _setConfirmVisible = null }
+  }, [])
+  if (!visible) return null
+  return (
+    <div className="fixed inset-0 z-[200] flex items-center justify-center px-5" style={{background:'rgba(0,0,0,0.5)'}}>
+      <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm">
+        <div className="text-base font-bold text-slate-900 mb-2">Submit your answers?</div>
+        <div className="text-sm text-slate-600 mb-5">Once submitted your answers will lock and cannot be changed unless unlocked by the facilitator.</div>
+        <div className="flex gap-3">
+          <button className="flex-1 py-2.5 rounded-xl border-2 border-slate-200 text-slate-600 font-semibold text-sm hover:bg-slate-50"
+            onClick={() => { setVisible(false); _confirmCallback = null }}>Cancel</button>
+          <button className="flex-1 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-sm hover:bg-emerald-700"
+            onClick={() => { setVisible(false); _confirmCallback?.(); _confirmCallback = null }}>Submit</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export function confirmSubmit(onConfirm: () => void) {
-  if (window.confirm('Submit your answers?\n\nOnce submitted your answers will lock and cannot be changed unless unlocked by the facilitator.')) {
-    onConfirm()
-  }
+  _confirmCallback = onConfirm
+  _setConfirmVisible?.(true)
 }
 
 // ─── ACTIVITY CARD ───────────────────────────────────────────
