@@ -11,7 +11,7 @@ export const WORKSHOP_CODES: Record<string, { name: string }> = {
 export const BLOCK_STRUCTURE = [
   { id: 1, label: 'Social Media Foundations', deliverable: 'Situation Analysis', activities: ['b1a1','b1a2','b1a3'] as ActivityKey[], color: 'blue' },
   { id: 2, label: 'Consumer Behaviour & Ethics', deliverable: 'Audience & Objectives', activities: ['b2a1','b2a2','b2a3','b2a4','b2a5'] as ActivityKey[], color: 'violet' },
-  { id: 3, label: 'Platforms & Algorithms', deliverable: 'Channel Strategy', activities: ['b3a1','b3a2'] as ActivityKey[], color: 'teal' },
+  { id: 3, label: 'Platforms & Algorithms', deliverable: 'Channel Strategy', activities: ['b3a2','b3a1'] as ActivityKey[], color: 'teal' },
   { id: 4, label: 'Content & Influencer Strategy', deliverable: 'Campaign Platform & Creative', activities: ['b4a1','b4a2','b4a3','b4a4'] as ActivityKey[], color: 'amber' },
   { id: 5, label: 'Paid Social & Commerce', deliverable: 'Paid Social Strategy', activities: ['b5a1','b5a2','b5a3'] as ActivityKey[], color: 'red' },
   { id: 6, label: 'Analytics & Measurement', deliverable: 'Measurement Framework', activities: ['b6a1','b6a2','b6a3'] as ActivityKey[], color: 'emerald' },
@@ -30,7 +30,7 @@ export const ACTIVITY_LABELS: Record<ActivityKey, string> = {
   b3a1: 'Platform Selection',
   b3a2: 'Algorithm Detective',
   b4a1: 'Content Format Selection',
-  b4a2: 'Campaign Platform Workshop',
+  b4a2: 'Campaign Idea Workshop',
   b4a3: 'Creative Concept Studio',
   b4a4: 'Influencer Selection',
   b5a1: 'Audience Targeting',
@@ -131,21 +131,21 @@ export const ATTENTION_FACTORS_MAX = 2
 
 // ─── B2A2 ────────────────────────────────────────────────────
 export const AUDIENCE_MOTIVATIONS = [
+  { id: 'bargain', label: 'Finding the cheapest deals online', correct: false },
   { id: 'achievement', label: 'Achievement & self-improvement', correct: true },
+  { id: 'news', label: 'Keeping up with celebrity gossip', correct: false },
   { id: 'identity', label: 'Athletic identity & belonging', correct: true },
+  { id: 'professional', label: 'Professional networking and career development', correct: false },
   { id: 'inspiration', label: 'Inspiration and motivation', correct: true },
   { id: 'community', label: 'Community and shared goals', correct: true },
-  { id: 'bargain', label: 'Finding the cheapest deals online', correct: false },
-  { id: 'news', label: 'Keeping up with celebrity gossip', correct: false },
-  { id: 'professional', label: 'Professional networking and career development', correct: false },
 ]
 export const AUDIENCE_PAIN_POINTS = [
+  { id: 'commute', label: 'Long commute times making exercise difficult', correct: false },
   { id: 'motivation', label: 'Lack of motivation to stay consistent', correct: true },
+  { id: 'b2b_pain', label: 'Finding enterprise software for their business', correct: false },
   { id: 'expensive', label: 'Perception that Nike is too expensive', correct: true },
   { id: 'authenticity', label: 'Scepticism of corporate brand messaging', correct: true },
   { id: 'injury', label: 'Fear of injury putting them off training', correct: true },
-  { id: 'commute', label: 'Long commute times making exercise difficult', correct: false },
-  { id: 'b2b_pain', label: 'Finding enterprise software for their business', correct: false },
 ]
 export const AUDIENCE_PLATFORMS = [
   { id: 'instagram', label: 'Instagram', correct: true },
@@ -304,7 +304,7 @@ export const INFLUENCER_KEYWORDS = ['engagement', 'authentic', 'niche', 'communi
 export const TARGETING_OPTIONS = {
   demographics: [
     { id: 'age_18_24', label: '18–24', recommended: true },
-    { id: 'age_25_34', label: '25–34 (secondary reach)', recommended: true },
+    { id: 'age_25_34', label: '25–34', recommended: true },
     { id: 'age_35_44', label: '35–44', recommended: false },
     { id: 'gender_female', label: 'Female', recommended: true },
     { id: 'gender_all', label: 'All Genders', recommended: false },
