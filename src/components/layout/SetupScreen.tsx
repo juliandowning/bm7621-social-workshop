@@ -132,7 +132,7 @@ export function SetupScreen({ onComplete, onFacilitator }: SetupScreenProps) {
     const updatedMembers = [captain]
     const updatedTeam: Team = { ...selectedTeam, name: agencyName.trim(), members: updatedMembers }
     setTeam(updatedTeam, false)
-    if (!selectedTeam.id.startsWith('demo-')) await updateTeamMembers(selectedTeam.id, updatedMembers)
+    if (!selectedTeam.id.startsWith('demo-')) await updateTeamMembers(selectedTeam.id, updatedMembers, agencyName.trim())
     onComplete(1)
   }
 
@@ -154,7 +154,7 @@ export function SetupScreen({ onComplete, onFacilitator }: SetupScreenProps) {
               <p className="text-sm text-slate-500 mb-6">Your facilitator will give you your team code.</p>
               <input type="text" autoFocus
                 className="w-full border-2 border-slate-200 rounded-xl px-4 py-4 text-center text-2xl font-mono font-bold uppercase tracking-widest outline-none focus:border-brand-400 mb-4"
-                placeholder="SOCIAL01" value={code}
+                placeholder="Enter Code" value={code}
                 onChange={e => setCode(e.target.value.toUpperCase())}
                 onKeyDown={e => e.key === 'Enter' && handleCode()} maxLength={10} />
               {error && <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3 mb-4">{error}</div>}
@@ -210,8 +210,7 @@ export function SetupScreen({ onComplete, onFacilitator }: SetupScreenProps) {
                 onClick={handleNewMember} disabled={!memberName.trim()}>
                 Join as Team Member →
               </button>
-              <button className="w-full mt-2 text-xs text-slate-400 hover:text-slate-600 py-1"
-                onClick={() => setStep('returning_or_new')}>← Back</button>
+              <p className="text-sm text-slate-500 mt-3 text-center">Joining as a <strong>Team Member</strong> — your team captain has already set up the agency.</p>
             </div>
           )}
 
