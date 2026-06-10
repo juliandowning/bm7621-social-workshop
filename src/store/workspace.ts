@@ -10,6 +10,7 @@ interface WorkspaceStore extends WorkspaceState {
   unlockActivity: (key: ActivityKey) => void
   updateResponse: (patch: Partial<ResponseMap>) => void
   clearWorkspace: () => void
+  syncFromServer: (scores: ScoreMap, responses: ResponseMap) => void
   syncToSupabase: () => Promise<void>
   setBroadcast: (msg: BroadcastMessage | null) => void
 }
@@ -76,6 +77,8 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
       },
 
       clearWorkspace: () => set({ ...initialState }),
+
+      syncFromServer: (scores: ScoreMap, responses: ResponseMap) => set({ scores, responses }),
 
       setBroadcast: (msg) => set({ broadcastMessage: msg }),
 
