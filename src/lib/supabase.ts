@@ -20,7 +20,7 @@ export async function getTeamByCode(code: string) {
 
 export async function updateTeamMembers(teamId: string, members: TeamMember[], agencyName?: string) {
   const update: Record<string, unknown> = { members }
-  if (agencyName) update['agency_name'] = agencyName
+  if (agencyName) update['name'] = agencyName
   const { error } = await supabase
     .from('bm7621social_teams')
     .update(update)
