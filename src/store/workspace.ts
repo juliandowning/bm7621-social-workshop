@@ -79,7 +79,8 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
       clearWorkspace: () => set({ ...initialState }),
 
       syncFromServer: (scores: ScoreMap, responses: ResponseMap) => {
-        // Bypass viewer guard — this is a server-driven update, always apply
+        // Clear localStorage entry so persist doesn't rehydrate old state over this
+        try { localStorage.removeItem('bm7621-social-workspace') } catch { /* ignore */ }
         set({ scores, responses })
       },
 
