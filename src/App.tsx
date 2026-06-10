@@ -57,6 +57,22 @@ function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
     return () => { unsub() }
   }, [setBroadcast])
 
+  // Manual refresh for viewers
+  const refreshViewer = async () => {
+    if (!team?.id || team.id.startsWith('demo-') || !isViewer) return
+    const { data } = await supabase
+      .from('bm7621social_workspace_data')
+      .select('scores, responses')
+      .eq('team_id', team.id)
+      .maybeSingle()
+    if (data?.scores != null) {
+      syncFromServer(
+        data.scores as import('./types').ScoreMap,
+        (data.responses || {}) as import('./types').ResponseMap
+      )
+    }
+  }
+
   // Poll for workspace updates for viewers (every 8s)
   useEffect(() => {
     if (!team?.id || team.id.startsWith('demo-') || !isViewer) return
@@ -156,6 +172,13 @@ function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
       <div className="hidden md:block fixed top-0 left-0 h-full z-50">
         <Sidebar currentPanel={panel} onNavigate={navigate} />
       </div>
+      {isViewer && (
+        <button onClick={refreshViewer}
+          className="hidden md:flex fixed top-3 right-4 z-50 items-center gap-1.5 px-3 py-1.5 bg-brand-50 border border-brand-200 text-brand-600 text-xs font-semibold rounded-lg hover:bg-brand-100 transition-colors"
+          title="Refresh to see latest answers">
+          ↻ Refresh
+        </button>
+      )}
 
       <div className="flex-1 md:ml-64">
         <div className="md:hidden sticky top-0 z-[60] bg-white border-b border-slate-200 px-4 py-3 flex items-center gap-3">
@@ -163,7 +186,14 @@ function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
             className="w-10 h-10 flex items-center justify-center rounded-lg bg-slate-100 text-slate-700 text-xl font-bold flex-shrink-0">
             {sidebarOpen ? '✕' : '☰'}
           </button>
-          <div className="text-sm font-bold text-slate-900 truncate">{meta.title}</div>
+          <div className="text-sm font-bold text-slate-900 truncate flex-1">{meta.title}</div>
+          {isViewer && (
+            <button onClick={refreshViewer}
+              className="w-9 h-9 flex items-center justify-center rounded-lg bg-brand-50 text-brand-600 text-base flex-shrink-0"
+              title="Refresh to see latest answers">
+              ↻
+            </button>
+          )}
         </div>
         <div className="px-4 pt-6 pb-2 border-b border-slate-200 bg-white hidden md:block">
           <div className="text-[10px] font-bold tracking-widest uppercase text-brand-500 mb-0.5">{meta.subtitle}</div>
