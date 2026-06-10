@@ -14,7 +14,7 @@ import { AgencyPitch } from './components/activities/AgencyPitch'
 import { LeaderboardPanel } from './components/leaderboard/LeaderboardPanel'
 import { ExportsPanel } from './components/exports/ExportsPanel'
 import { FacilitatorDashboard } from './components/facilitator/FacilitatorDashboard'
-import { BroadcastToast } from './components/ui/shared'
+import { BroadcastToast, ConfirmModal } from './components/ui/shared'
 import { subscribeToBroadcast } from './lib/supabase'
 import type { BroadcastMessage } from './types'
 
@@ -78,6 +78,7 @@ function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
 
   return (
     <div className="flex min-h-screen bg-slate-50">
+      <ConfirmModal />
       {broadcastMessage && (
         <BroadcastToast message={broadcastMessage.text} type={broadcastMessage.type} onDismiss={() => setBroadcast(null)} />
       )}
@@ -110,6 +111,16 @@ function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
                 onClick={() => { navigate(item.id); setSidebarOpen(false) }}
               >{item.label}</button>
             ))}
+            <button
+              style={{color:'#ef4444',padding:'12px 16px',textAlign:'left',border:'none',background:'transparent',fontSize:'14px',cursor:'pointer',borderTop:'1px solid rgba(255,255,255,0.1)',marginTop:'8px',width:'100%'}}
+              onClick={() => {
+                setSidebarOpen(false)
+                if (window.confirm('Leave workshop? Your progress is saved.')) {
+                  useWorkspaceStore.getState().clearWorkspace()
+                  window.location.reload()
+                }
+              }}
+            >⇄ Switch Team / Sign Out</button>
           </div>
           {/* Tap outside */}
           <div style={{flex:1,background:'rgba(0,0,0,0.6)'}} onClick={() => setSidebarOpen(false)} />
