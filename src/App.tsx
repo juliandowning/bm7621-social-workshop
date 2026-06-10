@@ -83,16 +83,17 @@ function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
           .select('scores, responses')
           .eq('team_id', team.id)
           .maybeSingle()
-        if (error) { console.error('Viewer poll error:', error.message); return }
-        if (data?.scores != null) {
+        if (error) return
+        // Only sync if there's meaningful data — don't wipe state with empty response
+        const scores = data?.scores as import('./types').ScoreMap | null
+        if (scores && Object.keys(scores).length > 0) {
           syncFromServer(
-            data.scores as import('./types').ScoreMap,
-            (data.responses || {}) as import('./types').ResponseMap
+            scores,
+            (data?.responses || {}) as import('./types').ResponseMap
           )
         }
-      } catch (e) { console.error('Viewer poll exception:', e) }
+      } catch { /* silent */ }
     }
-    poll()
     const interval = setInterval(poll, 8000)
     return () => clearInterval(interval)
   }, [team?.id, isViewer, syncFromServer])
