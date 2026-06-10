@@ -78,7 +78,10 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
 
       clearWorkspace: () => set({ ...initialState }),
 
-      syncFromServer: (scores: ScoreMap, responses: ResponseMap) => set({ scores, responses }),
+      syncFromServer: (scores: ScoreMap, responses: ResponseMap) => {
+        // Bypass viewer guard — this is a server-driven update, always apply
+        set({ scores, responses })
+      },
 
       setBroadcast: (msg) => set({ broadcastMessage: msg }),
 
