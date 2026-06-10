@@ -104,7 +104,7 @@ function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
               { id: 'block6', label: 'Block 6 — Analytics' },
               { id: 'block7', label: 'Block 7 — AI & Future' },
               { id: 'final', label: '🏆 Agency Pitch' },
-              { id: 'leaderboard', label: '📊 Leaderboard' },
+              { id: 'leaderboard', label: '👥 Teams & Leaderboard' },
               { id: 'exports', label: '↓ Export Centre' },
             ].map(item => (
               <button key={item.id}
