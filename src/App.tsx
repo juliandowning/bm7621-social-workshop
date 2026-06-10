@@ -60,19 +60,16 @@ function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
   // Manual refresh for viewers
   const refreshViewer = async () => {
     if (!team?.id || !isViewer) return
-    console.log('Viewer refresh: fetching for team', team.id)
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('bm7621social_workspace_data')
       .select('scores, responses')
       .eq('team_id', team.id)
       .maybeSingle()
-    console.log('Viewer refresh result:', { data, error })
     if (data) {
-      const scores = (data.scores || {}) as import('./types').ScoreMap
-      const responses = (data.responses || {}) as import('./types').ResponseMap
-      console.log('Syncing scores keys:', Object.keys(scores))
-      console.log('Syncing response keys:', Object.keys(responses))
-      syncFromServer(scores, responses)
+      syncFromServer(
+        (data.scores || {}) as import('./types').ScoreMap,
+        (data.responses || {}) as import('./types').ResponseMap
+      )
     }
   }
 
