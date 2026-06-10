@@ -16,7 +16,7 @@ import { TeamPanel } from './components/leaderboard/TeamPanel'
 import { ExportsPanel } from './components/exports/ExportsPanel'
 import { FacilitatorDashboard } from './components/facilitator/FacilitatorDashboard'
 import { BroadcastToast, ConfirmModal } from './components/ui/shared'
-import { subscribeToBroadcast } from './lib/supabase'
+import { subscribeToBroadcast, subscribeToTeamWorkspace } from './lib/supabase'
 import type { BroadcastMessage } from './types'
 
 type Panel = 'mission' | 'block1' | 'block2' | 'block3' | 'block4' | 'block5' | 'block6' | 'block7' | 'final' | 'leaderboard' | 'exports'
@@ -38,7 +38,7 @@ const PANEL_TITLES: Record<Panel, { title: string; subtitle: string }> = {
 function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
   const [panel, setPanel] = useState<Panel>((initialPanel as Panel) || 'mission')
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const { broadcastMessage, setBroadcast } = useWorkspaceStore()
+  const { broadcastMessage, setBroadcast, team, isViewer, updateScore, updateResponse } = useWorkspaceStore()
 
   useEffect(() => {
     const unsub = subscribeToBroadcast((payload: unknown) => {
@@ -56,6 +56,24 @@ function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
     })
     return () => { unsub() }
   }, [setBroadcast])
+
+  // Real-time workspace sync for viewers and non-captain members
+  useEffect(() => {
+    if (!team?.id || team.id.startsWith('demo-')) return
+    // Only subscribe if viewer or not the first member (captain)
+    const myName = team.members?.[0]?.name
+    const isCapain = !isViewer && team.members?.[0] !== undefined
+    if (!isViewer && isCapain) return // captain manages their own state
+    const unsub = subscribeToTeamWorkspace(team.id, ({ scores, responses }) => {
+      const s = scores as Record<string, { points: number; max: number; completed: boolean; locked: boolean }>
+      const r = responses as Record<string, unknown>
+      if (s) Object.entries(s).forEach(([key, val]) => {
+        if (val) updateScore(key as Parameters<typeof updateScore>[0], val.points, val.max)
+      })
+      if (r) updateResponse(r)
+    })
+    return () => { unsub() }
+  }, [team?.id, isViewer])
 
   const navigate = (p: string) => { setPanel(p as Panel); setSidebarOpen(false); window.scrollTo(0, 0) }
   const meta = PANEL_TITLES[panel] || PANEL_TITLES.mission
