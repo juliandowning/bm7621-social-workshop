@@ -12,6 +12,7 @@ import { Block6 } from './components/activities/Block6'
 import { Block7 } from './components/activities/Block7'
 import { AgencyPitch } from './components/activities/AgencyPitch'
 import { LeaderboardPanel } from './components/leaderboard/LeaderboardPanel'
+import { TeamPanel } from './components/leaderboard/TeamPanel'
 import { ExportsPanel } from './components/exports/ExportsPanel'
 import { FacilitatorDashboard } from './components/facilitator/FacilitatorDashboard'
 import { BroadcastToast, ConfirmModal } from './components/ui/shared'
@@ -70,7 +71,7 @@ function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
       case 'block6': return <Block6 />
       case 'block7': return <Block7 />
       case 'final': return <AgencyPitch />
-      case 'leaderboard': return <LeaderboardPanel />
+      case 'leaderboard': return <><TeamPanel /><LeaderboardPanel /></>
       case 'exports': return <ExportsPanel />
       default: return <MissionPanel />
     }
