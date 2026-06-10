@@ -19,12 +19,14 @@ export async function getTeamByCode(code: string) {
 }
 
 export async function updateTeamMembers(teamId: string, members: TeamMember[], agencyName?: string) {
-  const update: Record<string, unknown> = { members }
+  const update: Record<string, unknown> = { members: members }
   if (agencyName) update['name'] = agencyName
-  const { error } = await supabase
+  const { error, data } = await supabase
     .from('bm7621social_teams')
     .update(update)
     .eq('id', teamId)
+    .select()
+  if (error) console.error('updateTeamMembers error:', error.message, error.details)
   return !error
 }
 
@@ -74,6 +76,26 @@ export function subscribeToBroadcast(callback: (payload: unknown) => void) {
 export function subscribeToAllWorkspaces(callback: (payload: unknown) => void) {
   const channel = supabase.channel('social-workspace-updates')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'bm7621social_workspace_data' }, callback)
+    .subscribe()
+  return () => supabase.removeChannel(channel)
+}
+
+export function subscribeToTeamWorkspace(teamId: string, callback: (data: { scores: unknown; responses: unknown }) => void) {
+  const channel = supabase.channel(`team-workspace-${teamId}`)
+    .on('postgres_changes', {
+      event: 'UPDATE',
+      schema: 'public',
+      table: 'bm7621social_workspace_data',
+      filter: `team_id=eq.${teamId}`,
+    }, async () => {
+      // Re-fetch full data on any update
+      const { data } = await supabase
+        .from('bm7621social_workspace_data')
+        .select('scores, responses')
+        .eq('team_id', teamId)
+        .maybeSingle()
+      if (data) callback({ scores: data.scores, responses: data.responses })
+    })
     .subscribe()
   return () => supabase.removeChannel(channel)
 }
