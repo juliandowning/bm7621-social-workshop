@@ -38,7 +38,7 @@ const PANEL_TITLES: Record<Panel, { title: string; subtitle: string }> = {
 function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
   const [panel, setPanel] = useState<Panel>((initialPanel as Panel) || 'mission')
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const { broadcastMessage, setBroadcast, team, isViewer, updateScore, updateResponse } = useWorkspaceStore()
+  const { broadcastMessage, setBroadcast, team, isViewer, syncFromServer } = useWorkspaceStore()
 
   useEffect(() => {
     const unsub = subscribeToBroadcast((payload: unknown) => {
@@ -57,27 +57,29 @@ function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
     return () => { unsub() }
   }, [setBroadcast])
 
-  // Poll for workspace updates for viewers (every 10s)
+  // Poll for workspace updates for viewers (every 8s)
   useEffect(() => {
     if (!team?.id || team.id.startsWith('demo-') || !isViewer) return
     const poll = async () => {
-      const { data } = await supabase
-        .from('bm7621social_workspace_data')
-        .select('scores, responses')
-        .eq('team_id', team.id)
-        .maybeSingle()
-      if (data?.scores) {
-        const s = data.scores as Record<string, { points: number; max: number }>
-        Object.entries(s).forEach(([key, val]) => {
-          if (val) updateScore(key as Parameters<typeof updateScore>[0], val.points, val.max)
-        })
-      }
-      if (data?.responses) updateResponse(data.responses as Record<string, unknown>)
+      try {
+        const { data, error } = await supabase
+          .from('bm7621social_workspace_data')
+          .select('scores, responses')
+          .eq('team_id', team.id)
+          .maybeSingle()
+        if (error) { console.error('Viewer poll error:', error.message); return }
+        if (data?.scores != null) {
+          syncFromServer(
+            data.scores as import('./types').ScoreMap,
+            (data.responses || {}) as import('./types').ResponseMap
+          )
+        }
+      } catch (e) { console.error('Viewer poll exception:', e) }
     }
-    poll() // immediate on load
-    const interval = setInterval(poll, 10000)
+    poll()
+    const interval = setInterval(poll, 8000)
     return () => clearInterval(interval)
-  }, [team?.id, isViewer])
+  }, [team?.id, isViewer, syncFromServer])
 
   const navigate = (p: string) => { setPanel(p as Panel); setSidebarOpen(false); window.scrollTo(0, 0) }
   const meta = PANEL_TITLES[panel] || PANEL_TITLES.mission
