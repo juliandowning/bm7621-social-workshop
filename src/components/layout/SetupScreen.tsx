@@ -9,7 +9,7 @@ interface SetupScreenProps {
   onFacilitator: () => void
 }
 
-type JoinStep = 'code' | 'returning_or_new' | 'new_member' | 'first_setup'
+type JoinStep = 'code' | 'returning_or_new' | 'first_setup'
 
 export function SetupScreen({ onComplete, onFacilitator }: SetupScreenProps) {
   const { setTeam, updateScore, updateResponse } = useWorkspaceStore()
@@ -93,30 +93,22 @@ export function SetupScreen({ onComplete, onFacilitator }: SetupScreenProps) {
     const existing = selectedTeam.members?.find(m => m.name.toLowerCase() === name.toLowerCase())
 
     if (existing) {
-      // Restore session — never set viewer=true for role:'member'
-      const isViewer = existing.role === 'viewer'
-      const updatedTeam = { ...selectedTeam }
-      setTeam(updatedTeam, isViewer)
+      // Returning member — restore session with original role
+      setTeam({ ...selectedTeam }, existing.role === 'viewer')
       restoreWorkspace(existingWorkspace)
       onComplete(getLastBlock(existingWorkspace))
     } else {
-      // Name not found — new member joining
-      setStep('new_member')
+      // New name — join as Team Member immediately
+      const newMember: TeamMember = { name, order: (selectedTeam.members?.length || 0) + 1, role: 'member' }
+      const updatedMembers = [...(selectedTeam.members || []), newMember]
+      const updatedTeam: Team = { ...selectedTeam, members: updatedMembers }
+      setTeam(updatedTeam, false)
+      if (!selectedTeam.id.startsWith('demo-')) {
+        const saved = await updateTeamMembers(selectedTeam.id, updatedMembers)
+        if (!saved) console.error('Failed to save new member to Supabase')
+      }
+      onComplete(1)
     }
-  }
-
-  const handleNewMember = async () => {
-    if (!selectedTeam || !memberName.trim()) return
-    const name = memberName.trim()
-    const newMember: TeamMember = { name, order: (selectedTeam.members?.length || 0) + 1, role: 'member' }
-    const updatedMembers = [...(selectedTeam.members || []), newMember]
-    const updatedTeam: Team = { ...selectedTeam, members: updatedMembers }
-    setTeam(updatedTeam, false) // explicitly not a viewer
-    if (!selectedTeam.id.startsWith('demo-')) {
-      const saved = await updateTeamMembers(selectedTeam.id, updatedMembers)
-      if (!saved) console.error('Failed to save new member to Supabase')
-    }
-    onComplete(1)
   }
 
   const handleViewer = async () => {
@@ -202,27 +194,6 @@ export function SetupScreen({ onComplete, onFacilitator }: SetupScreenProps) {
               </button>
               <button className="w-full mt-2 text-xs text-slate-400 hover:text-slate-600 py-1"
                 onClick={() => { setStep('code'); setError('') }}>← Different code</button>
-            </div>
-          )}
-
-          {/* Step 2b: New member joining existing team */}
-          {step === 'new_member' && selectedTeam && (
-            <div className="p-8">
-              <div className="bg-slate-900 rounded-xl p-4 text-center mb-6">
-                <div className="text-[10px] font-bold tracking-widest uppercase text-slate-400 mb-1">Joining</div>
-                <div className="text-white font-bold text-lg">{selectedTeam.name}</div>
-              </div>
-              <h2 className="text-base font-bold text-slate-900 mb-1">New team member</h2>
-              <p className="text-sm text-slate-500 mb-5">Your agency is already set up. Enter your name to join as a Team Member.</p>
-              <input type="text" autoFocus
-                className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-brand-400 mb-4"
-                placeholder="Your name" value={memberName}
-                onChange={e => setMemberName(e.target.value)} />
-              <button className="w-full bg-brand-600 text-white font-bold py-3 rounded-xl hover:bg-brand-700 transition-colors disabled:opacity-50"
-                onClick={handleNewMember} disabled={!memberName.trim()}>
-                Join as Team Member →
-              </button>
-              <p className="text-sm text-slate-500 mt-3 text-center">Joining as a <strong>Team Member</strong> — your team captain has already set up the agency.</p>
             </div>
           )}
 
