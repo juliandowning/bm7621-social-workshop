@@ -18,3 +18,12 @@
   .btn-primary { @apply bg-brand-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-brand-700 transition-colors disabled:opacity-50; }
   .btn-secondary { @apply px-4 py-2 border-2 border-slate-200 rounded-xl text-sm text-slate-600 hover:bg-slate-50 font-medium transition-colors; }
 }
+
+@media print {
+  body * { visibility: hidden; }
+  #agency-pitch-content, #agency-pitch-content * { visibility: visible; }
+  #agency-pitch-content { position: absolute; left: 0; top: 0; width: 100%; }
+  .no-print { display: none !important; }
+  button { display: none !important; }
+  .bg-gradient-to-br { background: #1e1b4b !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
