@@ -118,7 +118,7 @@ export function Sidebar({ currentPanel, onNavigate, onClose }: SidebarProps) {
 
         <div className="text-[10px] font-bold uppercase tracking-widest text-slate-600 px-3 mb-1.5 mt-3">Tools</div>
         {[
-          { id: 'leaderboard', icon: '📊', label: 'Leaderboard' },
+          { id: 'leaderboard', icon: '👥', label: 'Teams & Leaderboard' },
           { id: 'exports', icon: '↓', label: 'Export Centre' },
         ].map(item => (
           <button key={item.id} onClick={() => navigate(item.id)}
