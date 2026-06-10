@@ -129,22 +129,21 @@ export function Block6() {
       {/* A20: Funnel Analysis */}
       <ActivityCard number={20} title="Funnel Analysis" subtitle="Identify where Nike is losing users and how to fix it" points={scores.b6a2?.points || 0} locked={a2Locked}>
         <Alert type="info">🔍 Review Nike's conversion funnel. Identify the biggest drop-off and select the right optimisation actions.</Alert>
-        <div className="space-y-2 mb-5">
+        <div className="space-y-3 mb-5">
           {FUNNEL_DATA.map((stage, i) => {
-            const width = Math.max(15, Math.round(stage.users / FUNNEL_DATA[0].users * 100))
+            const width = Math.max(10, Math.round(stage.users / FUNNEL_DATA[0].users * 100))
             const drop = i > 0 ? (FUNNEL_DATA[i-1].users - stage.users) / FUNNEL_DATA[i-1].users * 100 : 0
             const isBottleneck = drop > 70
             return (
-              <div key={stage.stage}>
-                <div className="flex items-center gap-3 mb-0.5">
-                  <div className="text-xs font-semibold text-slate-600 w-36 flex-shrink-0">{stage.stage}</div>
-                  <div className="flex-1 bg-slate-100 rounded-full h-8 overflow-hidden">
-                    <div className={`h-full rounded-full flex items-center justify-end pr-3 ${isBottleneck ? 'bg-red-400' : 'bg-brand-500'}`} style={{ width: `${width}%` }}>
-                      <span className="text-white text-xs font-bold">{stage.users.toLocaleString()}</span>
-                    </div>
-                  </div>
-                  {stage.dropoff && <div className="text-[10px] text-red-500 w-28 flex-shrink-0">↓ {stage.dropoff}</div>}
+              <div key={stage.stage} className="bg-white border border-slate-100 rounded-xl p-3">
+                <div className="flex justify-between items-center mb-1.5">
+                  <span className="text-xs font-bold text-slate-700">{stage.stage}</span>
+                  <span className="text-xs font-mono font-bold text-slate-800">{stage.users.toLocaleString()}</span>
                 </div>
+                <div className="bg-slate-100 rounded-full h-3 overflow-hidden mb-1">
+                  <div className={`h-full rounded-full transition-all ${isBottleneck ? 'bg-red-400' : 'bg-brand-500'}`} style={{ width: `${width}%` }} />
+                </div>
+                {stage.dropoff && <div className="text-[10px] text-red-500 font-semibold">↓ {stage.dropoff}</div>}
               </div>
             )
           })}

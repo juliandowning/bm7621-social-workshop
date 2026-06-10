@@ -67,28 +67,28 @@ export function Block5() {
         <Alert type="info">🎯 Build Nike's targeting stack. A strong strategy combines cold audiences (new people) with warm retargeting (people who already know Nike).</Alert>
         <div className="space-y-4 mb-4">
           <div>
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Demographics</div>
-            <div className="text-[10px] text-slate-400 mb-2">Nike brief: 18–24 female, UK + US</div>
+            <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Demographics — confirm targeting parameters</div>
+            <div className="text-[10px] text-slate-400 mb-2">The brief specifies 18–24 female, UK + US. Should you extend the reach?</div>
             <MultiChoice disabled={a1Locked || isViewer} selected={a1Demo} onChange={setA1Demo} max={5}
-              options={TARGETING_OPTIONS.demographics.map(o => ({ id: o.id, label: o.label + (o.recommended ? ' ✓' : '') }))} />
+              options={TARGETING_OPTIONS.demographics.map(o => ({ id: o.id, label: o.label }))} />
           </div>
           <div>
             <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Interests (up to 4)</div>
             <MultiChoice disabled={a1Locked || isViewer} selected={a1Interests} onChange={setA1Interests} max={4}
-              options={TARGETING_OPTIONS.interests.map(o => ({ id: o.id, label: o.label + (o.recommended ? ' ✓' : '') }))} />
+              options={TARGETING_OPTIONS.interests.map(o => ({ id: o.id, label: o.label }))} />
           </div>
           <div>
             <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Behaviours</div>
             <MultiChoice disabled={a1Locked || isViewer} selected={a1Behaviours} onChange={setA1Behaviours} max={4}
-              options={TARGETING_OPTIONS.behaviours.map(o => ({ id: o.id, label: o.label + (o.recommended ? ' ✓' : '') }))} />
+              options={TARGETING_OPTIONS.behaviours.map(o => ({ id: o.id, label: o.label }))} />
           </div>
           <div>
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Retargeting (warm audiences)</div>
-            <MultiChoice disabled={a1Locked || isViewer} selected={a1Retargeting} onChange={setA1Retargeting} max={5}
-              options={TARGETING_OPTIONS.retargeting.map(o => ({ id: o.id, label: o.label + (o.recommended ? ' ✓' : '') }))} />
+            <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Retargeting — select your top 3 warm audiences</div>
+            <MultiChoice disabled={a1Locked || isViewer} selected={a1Retargeting} onChange={setA1Retargeting} max={3}
+              options={TARGETING_OPTIONS.retargeting.map(o => ({ id: o.id, label: o.label }))} />
           </div>
         </div>
-        <div className="text-[10px] text-slate-400 mb-3">✓ = recommended for Nike's brief</div>
+        
         {!a1Locked && !isViewer && <button className="btn-success" onClick={() => confirmSubmit(submitA1)} disabled={a1Demo.length + a1Interests.length < 3}>Submit Targeting</button>}
         {a1Locked && scores.b5a1 && <FeedbackPanel score={scores.b5a1.points} max={5}
           why="Quality based on selecting recommended options for Nike's 18–24 female brief and including retargeting audiences."

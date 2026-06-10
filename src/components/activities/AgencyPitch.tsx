@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { useWorkspaceStore, selectTotalScore, selectCompletedCount } from '../../store/workspace'
-import { OBJECTIVE_OPTIONS, FUTURE_TRENDS, AI_TOOL_CATEGORIES, INFLUENCER_TIERS, INFLUENCER_CONTENT_STYLES, BUDGET_CATEGORIES, SOCIAL_COMMERCE_PLATFORMS, REEL_HOOK_TYPES, CAROUSEL_COVER_APPROACHES, CAROUSEL_CONTENT_TYPES, STORY_MECHANICS, TOTAL_ACTIVITIES } from '../../data/workshop'
+import { OBJECTIVE_OPTIONS, FUTURE_TRENDS, AI_TOOL_CATEGORIES, INFLUENCER_TIERS, INFLUENCER_CONTENT_STYLES, BUDGET_CATEGORIES, SOCIAL_COMMERCE_PLATFORMS, REEL_HOOK_TYPES, CAROUSEL_COVER_APPROACHES, CAROUSEL_CONTENT_TYPES, STORY_MECHANICS, TOTAL_ACTIVITIES, AUDIENCE_MOTIVATIONS as AUDIENCE_MOTIVATIONS_DATA, AUDIENCE_PAIN_POINTS as AUDIENCE_PAIN_POINTS_DATA, AUDIENCE_PLATFORMS as AUDIENCE_PLATFORMS_DATA, COMMUNITY_TACTICS } from '../../data/workshop'
 
 function Badge({ children, color = 'brand' }: { children: React.ReactNode; color?: string }) {
   const colors: Record<string, string> = { brand: 'bg-brand-100 text-brand-700', violet: 'bg-violet-100 text-violet-700', teal: 'bg-teal-100 text-teal-700', amber: 'bg-amber-100 text-amber-700', emerald: 'bg-emerald-100 text-emerald-700', red: 'bg-red-100 text-red-700' }
@@ -18,7 +18,7 @@ function SlideCard({ number, title, ready, children }: { number: number; title: 
         </div>
         {ready && <Badge color="violet">✓ Ready</Badge>}
       </div>
-      {children && <div className="ml-11">{children}</div>}
+      {children && <div className="mt-1">{children}</div>}
     </div>
   )
 }
@@ -37,8 +37,8 @@ function Tags({ items }: { items: string[] }) {
   if (!items.length) return null
   return (
     <div className="flex flex-wrap gap-1.5 mt-1">
-      {items.map(item => (
-        <span key={item} className="text-xs bg-violet-50 border border-violet-200 text-violet-700 px-2.5 py-1 rounded-full">{item}</span>
+      {items.filter(Boolean).map((item, i) => (
+        <span key={i} className="text-xs bg-violet-50 border border-violet-200 text-violet-700 px-2.5 py-1 rounded-full">{item}</span>
       ))}
     </div>
   )
@@ -90,9 +90,10 @@ export function AgencyPitch() {
   const readySlides = [
     motivations.length > 0,
     objectives.length > 0,
+    tactics.length > 0,
     primaryPlatforms.length > 0,
     !!campaignName,
-    !!reelDesc || !!carouselDesc,
+    !!(reelDesc || carouselDesc || storyDesc || influencerBrief),
     !!infTier,
     Object.keys(budget).length > 0,
     Object.keys(kpis).length > 0,
@@ -208,7 +209,7 @@ export function AgencyPitch() {
         <h2 className="text-2xl font-bold mb-1">{agencyName}</h2>
         <p className="text-violet-200 text-sm mb-4">Nike Social Media Account · CIM Level 4</p>
         <div className="flex gap-4 text-sm">
-          <div><span className="font-bold text-2xl text-white">{readyCount}</span><span className="text-violet-300 text-xs ml-1">/ 10 slides ready</span></div>
+          <div><span className="font-bold text-2xl text-white">{readyCount}</span><span className="text-violet-300 text-xs ml-1">/ 10 ready</span></div>
           <div><span className="font-bold text-2xl text-white">{total}</span><span className="text-violet-300 text-xs ml-1">pts scored</span></div>
           <div><span className="font-bold text-2xl text-white">{completed}</span><span className="text-violet-300 text-xs ml-1">/ {TOTAL_ACTIVITIES} done</span></div>
         </div>
@@ -227,10 +228,9 @@ export function AgencyPitch() {
               <div className="bg-slate-50 rounded-xl p-3 mb-3 text-xs text-slate-600">
                 <strong>Target:</strong> Nike's 18–24 female audience — fitness-conscious, aspirational, active on TikTok and Instagram. Sceptical of corporate advertising; responds strongly to authentic stories and peer recommendations.
               </div>
-              <Row label="Motivations" value="" />
-              <Tags items={motivations} />
-              {painPoints.length > 0 && <><Row label="Pain Points" value="" /><Tags items={painPoints} /></>}
-              {audPlatforms.length > 0 && <><div className="mt-2"><Row label="Primary Platforms" value="" /></div><Tags items={audPlatforms} /></>}
+              {motivations.length > 0 && <><div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 mt-2">Motivations</div><Tags items={motivations.map(id => AUDIENCE_MOTIVATIONS_DATA.find(o => o.id === id)?.label || id)} /></>}
+              {painPoints.length > 0 && <><div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 mt-2">Pain Points</div><Tags items={painPoints.map(id => AUDIENCE_PAIN_POINTS_DATA.find(o => o.id === id)?.label || id)} /></>}
+              {audPlatforms.length > 0 && <><div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 mt-2">Primary Platforms</div><Tags items={audPlatforms.map(id => AUDIENCE_PLATFORMS_DATA.find(o => o.id === id)?.label || id)} /></>}
             </>
           )}
         </SlideCard>
@@ -268,7 +268,7 @@ export function AgencyPitch() {
           {tactics.length > 0 && (
             <>
               <div className="text-xs text-slate-500 mb-2">Selected tactics for Nike's community growth:</div>
-              <Tags items={tactics} />
+              <Tags items={tactics.map(id => COMMUNITY_TACTICS.find(t => t.id === id)?.label || id)} />
             </>
           )}
         </SlideCard>

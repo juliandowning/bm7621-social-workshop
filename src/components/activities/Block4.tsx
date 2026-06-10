@@ -93,18 +93,20 @@ export function Block4() {
           {FORMAT_OBJECTIVES.map((obj, i) => {
             const picks = a1Picks[i] || []
             const allFormats = ['Reels / Short Video', 'TikTok Originals', 'Carousels', 'Stories', 'Static Posts', 'Polls', 'Hashtag Challenges', 'Livestreams', 'Shoppable Posts', 'Long-form Video (YouTube)', 'Stories with Link']
+        const FORMAT_MAX = 2
             const showResult = a1Locked
             return (
               <div key={i} className="border border-slate-200 rounded-xl p-4">
-                <div className="font-bold text-slate-800 text-sm mb-3">"{obj.objective}"</div>
+                <div className="font-bold text-slate-800 text-sm mb-1">"{obj.objective}"</div>
+                <div className="text-xs text-slate-400 mb-3">Pick up to 2 formats ({(picks.length)}/2)</div>
                 <div className="flex flex-wrap gap-1.5">
                   {allFormats.map(fmt => {
                     const sel = picks.includes(fmt)
                     const isCorrect = obj.formats.includes(fmt)
                     return (
                       <button key={fmt} disabled={a1Locked || isViewer}
-                        onClick={() => { if (a1Locked || isViewer) return; setA1Picks(prev => ({ ...prev, [i]: sel ? picks.filter(f => f !== fmt) : [...picks, fmt] })) }}
-                        className={`px-2.5 py-1 rounded-full text-xs font-semibold border transition-all ${sel ? 'border-brand-500 bg-brand-500 text-white' : 'border-slate-200 bg-white text-slate-600 hover:border-brand-300'} ${showResult && isCorrect ? 'ring-2 ring-emerald-400' : ''} ${showResult && sel && !isCorrect ? 'border-red-300' : ''} disabled:cursor-default`}>
+                        onClick={() => { if (a1Locked || isViewer) return; if (!sel && picks.length >= FORMAT_MAX) return; setA1Picks(prev => ({ ...prev, [i]: sel ? picks.filter(f => f !== fmt) : [...picks, fmt] })) }}
+                        className={`px-2.5 py-1 rounded-full text-xs font-semibold border transition-all ${sel ? 'border-brand-500 bg-brand-500 text-white' : !sel && picks.length >= FORMAT_MAX ? 'border-slate-100 text-slate-300 opacity-50' : 'border-slate-200 bg-white text-slate-600 hover:border-brand-300'} ${showResult && isCorrect ? 'ring-2 ring-emerald-400' : ''} ${showResult && sel && !isCorrect ? 'border-red-300' : ''} disabled:cursor-default`}>
                         {fmt}
                       </button>
                     )
@@ -128,28 +130,28 @@ export function Block4() {
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Campaign Name</label>
             <input disabled={a2Locked || isViewer} value={a2Name} onChange={e => setA2Name(e.target.value)}
-              placeholder='e.g. "Built Different", "Move More Together", "Her Game"'
+              placeholder="e.g. Built Different, Her Game, Rise Together"
               className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-400 disabled:bg-slate-50" />
             <CharCount value={a2Name} min={3} max={50} />
           </div>
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Core Message</label>
             <input disabled={a2Locked || isViewer} value={a2Message} onChange={e => setA2Message(e.target.value)}
-              placeholder="The one sentence that captures what this campaign stands for"
+              placeholder="One sentence capturing what this campaign stands for"
               className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-400 disabled:bg-slate-50" />
             <CharCount value={a2Message} min={10} max={120} />
           </div>
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Audience Promise</label>
             <input disabled={a2Locked || isViewer} value={a2Promise} onChange={e => setA2Promise(e.target.value)}
-              placeholder="What does Nike commit to deliver through this campaign?"
+              placeholder="What Nike commits to deliver through this campaign"
               className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-400 disabled:bg-slate-50" />
             <CharCount value={a2Promise} min={10} max={120} />
           </div>
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Hero Concept</label>
             <textarea disabled={a2Locked || isViewer} value={a2Hero} onChange={e => setA2Hero(e.target.value)}
-              placeholder="Describe the one piece of content that defines this campaign — the hero execution that everything else builds around"
+              placeholder="The one piece of content that defines the campaign"
               rows={3} className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-400 resize-none disabled:bg-slate-50" />
             <CharCount value={a2Hero} min={30} max={300} />
           </div>
