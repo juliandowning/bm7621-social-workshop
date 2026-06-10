@@ -17,7 +17,7 @@ export interface Team {
 export type ActivityKey =
   | 'b1a1' | 'b1a2' | 'b1a3'
   | 'b2a1' | 'b2a2' | 'b2a3' | 'b2a4' | 'b2a5'
-  | 'b3a1' | 'b3a2' | 'b3a3'
+  | 'b3a1' | 'b3a2'
   | 'b4a1' | 'b4a2' | 'b4a3' | 'b4a4'
   | 'b5a1' | 'b5a2' | 'b5a3'
   | 'b6a1' | 'b6a2' | 'b6a3'
