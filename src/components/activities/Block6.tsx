@@ -88,7 +88,7 @@ export function Block6() {
             <div className="space-y-1.5">
               {CAMPAIGN_DATA.map(m => (
                 <button key={m.metric} disabled={a1Locked || isViewer}
-                  onClick={() => { if (a1Locked || isViewer) return; setA1Strengths(prev => prev.includes(m.metric) ? prev.filter(s => s !== m.metric) : [...prev, m.metric]) }}
+                  onClick={() => { if (a1Locked || isViewer) return; setA1Strengths(prev => prev.includes(m.metric) ? prev.filter(s => s !== m.metric) : [...prev, m.metric]); setA1Weaknesses(prev => prev.filter(w => w !== m.metric)) }}
                   className={`w-full text-left px-3 py-2 rounded-lg border-2 text-xs transition-all ${a1Strengths.includes(m.metric) ? 'border-emerald-500 bg-emerald-50 text-emerald-800' : 'border-slate-200 text-slate-600 hover:border-emerald-300'} ${a1Locked && m.status === 'good' ? 'ring-1 ring-emerald-400' : ''} disabled:cursor-default`}>
                   {m.metric}
                 </button>
@@ -100,7 +100,7 @@ export function Block6() {
             <div className="space-y-1.5">
               {CAMPAIGN_DATA.map(m => (
                 <button key={m.metric} disabled={a1Locked || isViewer}
-                  onClick={() => { if (a1Locked || isViewer) return; setA1Weaknesses(prev => prev.includes(m.metric) ? prev.filter(w => w !== m.metric) : [...prev, m.metric]) }}
+                  onClick={() => { if (a1Locked || isViewer) return; setA1Weaknesses(prev => prev.includes(m.metric) ? prev.filter(w => w !== m.metric) : [...prev, m.metric]); setA1Strengths(prev => prev.filter(s => s !== m.metric)) }}
                   className={`w-full text-left px-3 py-2 rounded-lg border-2 text-xs transition-all ${a1Weaknesses.includes(m.metric) ? 'border-red-400 bg-red-50 text-red-800' : 'border-slate-200 text-slate-600 hover:border-red-300'} ${a1Locked && m.status === 'bad' ? 'ring-1 ring-red-400' : ''} disabled:cursor-default`}>
                   {m.metric}
                 </button>
@@ -143,7 +143,7 @@ export function Block6() {
                 <div className="bg-slate-100 rounded-full h-3 overflow-hidden mb-1">
                   <div className={`h-full rounded-full transition-all ${isBottleneck ? 'bg-red-400' : 'bg-brand-500'}`} style={{ width: `${width}%` }} />
                 </div>
-                {stage.dropoff && <div className="text-[10px] text-red-500 font-semibold">↓ {stage.dropoff}</div>}
+                {a2Locked && stage.dropoff && <div className="text-[10px] text-red-500 font-semibold">↓ {stage.dropoff}</div>}
               </div>
             )
           })}

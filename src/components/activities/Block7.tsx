@@ -125,8 +125,8 @@ export function Block7() {
                         className={`w-full text-left p-3 rounded-lg border-2 transition-all flex items-start gap-3 ${sel ? 'border-brand-500 bg-brand-50' : 'border-slate-200 hover:border-brand-300'} disabled:cursor-default`}>
                         <div className={`w-3.5 h-3.5 border-2 rounded flex-shrink-0 mt-0.5 ${sel ? 'border-brand-500 bg-brand-500' : 'border-slate-300'}`} />
                         <div>
-                          <div className={`font-semibold text-sm ${sel ? 'text-brand-700' : 'text-slate-800'}`}>{tool.name}</div>
-                          <div className="text-xs text-slate-500">{tool.purpose}</div>
+                          <div className={`font-semibold text-sm mb-0.5 ${sel ? 'text-brand-700' : 'text-slate-800'}`}>{tool.name}</div>
+                          <div className={`text-xs font-medium ${sel ? 'text-brand-600' : 'text-slate-600'}`}>{tool.purpose}</div>
                         </div>
                       </button>
                     )

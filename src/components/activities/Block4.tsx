@@ -22,7 +22,7 @@ export function Block4() {
     lockActivity('b4a1')
   }
 
-  // A13: Campaign Platform Workshop - PITCH
+  // A13: Campaign Idea Workshop - PITCH
   const a2Locked = !!(responses['b4a2_locked'])
   const [a2Name, setA2Name] = useState<string>((responses['b4a2_name'] as string) || '')
   const [a2Message, setA2Message] = useState<string>((responses['b4a2_message'] as string) || '')
@@ -123,8 +123,8 @@ export function Block4() {
           keyLearning={['Reels/TikTok are discovery tools — interest graph distribution reaches non-followers.', 'Stories are relationship tools — they deepen connections with existing community.', 'Carousels have the highest save rate — saves are the strongest engagement signal on Instagram.']} />}
       </ActivityCard>
 
-      {/* A13: Campaign Platform Workshop - PITCH */}
-      <ActivityCard number={13} title="Campaign Platform Workshop" subtitle="Develop the big idea for Nike's campaign — the centrepiece of your pitch" points={scores.b4a2?.points || 0} locked={a2Locked} isPitch>
+      {/* A13: Campaign Idea Workshop - PITCH */}
+      <ActivityCard number={13} title="Campaign Idea Workshop" subtitle="Develop the big idea for Nike's campaign — the centrepiece of your pitch" points={scores.b4a2?.points || 0} locked={a2Locked} isPitch>
         <Alert type="info">💡 A campaign platform is the unifying idea that connects all content. It needs a name people remember, a message that means something, a promise the brand can keep, and a hero concept that brings it to life.</Alert>
         <div className="space-y-4 mb-4">
           <div>
@@ -243,15 +243,15 @@ export function Block4() {
             <div className="space-y-2">
               {INFLUENCER_TIERS.map(tier => (
                 <button key={tier.id} disabled={a4Locked || isViewer} onClick={() => !a4Locked && !isViewer && setInfTier(tier.id)}
-                  className={`w-full text-left p-3.5 border-2 rounded-xl transition-all ${infTier === tier.id ? 'border-brand-500 bg-brand-50' : 'border-slate-200 hover:border-brand-300'} disabled:cursor-default`}>
+                  className={`w-full text-left p-3.5 border-2 rounded-xl transition-all ${infTier === tier.id ? 'border-brand-600 bg-brand-600 shadow-md' : 'border-slate-200 hover:border-brand-300 bg-white'} disabled:cursor-default`}>
                   <div className="flex justify-between items-start">
                     <div>
-                      <div className={`font-bold text-sm ${infTier === tier.id ? 'text-brand-700' : 'text-slate-800'}`}>{tier.label}</div>
-                      <div className="text-xs text-slate-500 mt-0.5">{tier.desc}</div>
+                      <div className={`font-bold text-sm ${infTier === tier.id ? 'text-white' : 'text-slate-800'}`}>{tier.label}</div>
+                      <div className={`text-xs mt-0.5 ${infTier === tier.id ? 'text-brand-100' : 'text-slate-500'}`}>{tier.desc}</div>
                     </div>
-                    <span className="text-[10px] font-mono text-slate-400 flex-shrink-0 ml-2">{tier.engagementRate} eng.</span>
+                    <span className={`text-[10px] font-mono flex-shrink-0 ml-2 ${infTier === tier.id ? 'text-brand-200' : 'text-slate-400'}`}>{tier.engagementRate} eng.</span>
                   </div>
-                  <div className="text-[10px] text-brand-600 mt-1">Best for: {tier.best}</div>
+                  <div className={`text-[10px] mt-1 ${infTier === tier.id ? 'text-brand-100 font-semibold' : 'text-brand-600'}`}>Best for: {tier.best}</div>
                 </button>
               ))}
             </div>

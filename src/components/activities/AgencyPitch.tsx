@@ -202,7 +202,7 @@ export function AgencyPitch() {
   }
 
   return (
-    <div ref={pitchRef}>
+    <div ref={pitchRef} id="agency-pitch-content">
       {/* Header */}
       <div className="bg-gradient-to-br from-violet-900 to-slate-900 rounded-2xl p-6 mb-6 text-white">
         <div className="text-[10px] font-bold tracking-widest uppercase text-violet-300 mb-1">Agency Pitch</div>
@@ -213,10 +213,16 @@ export function AgencyPitch() {
           <div><span className="font-bold text-2xl text-white">{total}</span><span className="text-violet-300 text-xs ml-1">pts scored</span></div>
           <div><span className="font-bold text-2xl text-white">{completed}</span><span className="text-violet-300 text-xs ml-1">/ {TOTAL_ACTIVITIES} done</span></div>
         </div>
-        <button onClick={exportText}
-          className="mt-4 bg-white text-violet-900 font-bold px-5 py-2.5 rounded-xl text-sm hover:bg-violet-50 transition-colors shadow">
-          ↓ Download Pitch (.txt)
-        </button>
+        <div className="mt-4 flex gap-2">
+          <button onClick={() => window.print()}
+            className="flex-1 bg-white text-violet-900 font-bold px-5 py-2.5 rounded-xl text-sm hover:bg-violet-50 transition-colors shadow">
+            🖨 Download as PDF
+          </button>
+          <button onClick={exportText}
+            className="px-4 bg-white/20 text-white font-bold rounded-xl text-sm hover:bg-white/30 transition-colors">
+            .txt
+          </button>
+        </div>
       </div>
 
       <div className="space-y-4">
