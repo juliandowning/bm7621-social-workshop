@@ -101,16 +101,20 @@ function WorkshopApp({ initialPanel }: { initialPanel?: string }) {
   const navigate = (p: string) => { setPanel(p as Panel); setSidebarOpen(false); window.scrollTo(0, 0) }
   const meta = PANEL_TITLES[panel] || PANEL_TITLES.mission
 
+  // Key that changes when viewer receives server sync — forces blocks to remount with fresh state
+  const { responses: storeResponses } = useWorkspaceStore()
+  const responseKey = isViewer ? Object.keys(storeResponses).length : 0
+
   const renderPanel = () => {
     switch (panel) {
       case 'mission': return <MissionPanel onStart={() => navigate('block1')} />
-      case 'block1': return <Block1 />
-      case 'block2': return <Block2 />
-      case 'block3': return <Block3 />
-      case 'block4': return <Block4 />
-      case 'block5': return <Block5 />
-      case 'block6': return <Block6 />
-      case 'block7': return <Block7 />
+      case 'block1': return <Block1 key={`b1-${responseKey}`} />
+      case 'block2': return <Block2 key={`b2-${responseKey}`} />
+      case 'block3': return <Block3 key={`b3-${responseKey}`} />
+      case 'block4': return <Block4 key={`b4-${responseKey}`} />
+      case 'block5': return <Block5 key={`b5-${responseKey}`} />
+      case 'block6': return <Block6 key={`b6-${responseKey}`} />
+      case 'block7': return <Block7 key={`b7-${responseKey}`} />
       case 'final': return <AgencyPitch />
       case 'leaderboard': return <><TeamPanel /><LeaderboardPanel /></>
       case 'exports': return <ExportsPanel />
