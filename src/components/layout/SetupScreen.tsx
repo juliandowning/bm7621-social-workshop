@@ -164,7 +164,7 @@ export function SetupScreen({ onComplete, onFacilitator }: SetupScreenProps) {
                 className="w-full border-2 border-slate-200 rounded-xl px-4 py-4 text-center text-2xl font-mono font-bold uppercase tracking-widest outline-none focus:border-brand-400 mb-4"
                 placeholder="Enter Code" value={code}
                 onChange={e => setCode(e.target.value.toUpperCase())}
-                onKeyDown={e => e.key === 'Enter' && handleCode()} maxLength={10} />
+                onKeyDown={e => e.key === 'Enter' && handleCode()} maxLength={15} />
               {error && <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3 mb-4">{error}</div>}
               <button className="w-full bg-brand-600 text-white font-bold py-3.5 rounded-xl hover:bg-brand-700 transition-colors disabled:opacity-50 text-base"
                 onClick={handleCode} disabled={loading}>
